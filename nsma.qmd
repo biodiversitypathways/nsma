@@ -1,0 +1,172 @@
+---
+title: "Report on the use of passive acoustic monitoring for the North Slave Métis Alliance"
+format:
+  html:
+    grid:
+      margin-width: 300px
+navbar: right
+theme: cosmo
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Alex MacPhail"
+editor: visual
+bibliography: references.bib
+nocite: '@*'
+toc: true
+toc-depth: 3
+toc-expand: true
+toc-location: left
+styles: styles.css
+github: https://github.com/biodiversitypathways/peinp
+---
+
+![](){}
+
+
+```{r}
+#| label: load-packages and authenticate
+#| include: false
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(leaflet)
+library(wildrtrax)
+library(unmarked)
+library(sf)
+library(terra)
+library(vctrs)
+library(ggridges)
+library(scales)
+library(kableExtra)
+library(plotly)
+library(DT)
+library(lme4)
+library(ggpubr)
+library(vegan)
+library(MuMIn)
+library(ggmagnify)
+library(AICcmodavg)
+library(broom)
+
+wt_auth(force = T)
+
+load('nsma.RData')
+#save.image('nsma.RData')
+```
+
+# Abstract
+
+```{r Data download}
+#| warning: false
+#| message: false
+#| echo: true
+#| eval: false
+#| include: false
+
+nsma_projects <- wildrtrax::wt_get_download_summary(sensor = 'ARU') |>
+  filter(grepl('^North Slave', project)) |>
+  select(project_id) |>
+  pull()
+
+nsma_main <-
+  map_dfr(
+    .x = nsma_projects,
+    .f = ~ wildrtrax::wt_download_report(
+      project_id = .x,
+      sensor_id = "ARU",
+      weather_cols = T,
+      reports = "main"
+    )
+  )
+```
+
+# Introduction
+
+# Methods
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| include: true
+#| fig-align: center
+#| fig-cap: Locations from Prince Edward Island National Park ARU Monitoring Program
+#| label: fig-aru-monitoring-locations
+
+nsma_locs <- nsma_main |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(location, latitude, longitude, year) |>
+  distinct() |>
+  drop_na(latitude) |>
+  sf::st_as_sf(coords = c("longitude","latitude"), crs = 4326)
+
+locs_summary <- nsma_locs |>
+  st_drop_geometry() |>
+  group_by(location, year) |>
+  mutate(value = row_number()) |>
+  ungroup() |>
+  arrange(year) |>
+  pivot_wider(names_from = year, values_from = value, values_fill = 0) |>
+  rename('Location' = location)
+
+leaflet() %>%
+  addTiles() %>%
+  addMarkers(data = nsma_locs, popup = paste("Location:", nsma_locs$location, "<br>")) %>%
+  addMeasure() %>%
+  addMiniMap(position = "bottomleft")
+
+```
+
+# Results
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: false
+
+spp_rich_location <- nsma_main |>
+  as_tibble() |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F) |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(location, year, species_code) |>
+  distinct() |>
+  group_by(location, year) |>
+  summarise(species_count = n_distinct(species_code)) |>
+  ungroup()
+
+distinct_spp <- nsma_main |>
+  as_tibble() |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(species_code) |>
+  distinct() |>
+  arrange(species_code)
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-cap: Species richness at forest monitoring locations across years
+#| label: fig-spp-rich-locs
+#| cap-location: margin
+
+spp_rich_location |>
+  ggplot(aes(x=as.factor(year), y=species_count, fill=as.factor(year), group=as.factor(year))) +
+  geom_boxplot(alpha = 0.7) +
+  geom_point(alpha = 0.7) +
+  theme_bw() +
+  scale_fill_viridis_d() +
+  xlab('Year') + ylab('Species richness') +
+  ggtitle('Species richness at each location surveyed for each year')
+
+```
+
+# Discussion
