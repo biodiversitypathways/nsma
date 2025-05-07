@@ -16,7 +16,7 @@ toc-depth: 3
 toc-expand: true
 toc-location: left
 styles: styles.css
-github: https://github.com/biodiversitypathways/peinp
+github: https://github.com/biodiversitypathways/nsma
 ---
 
 ![](){}
@@ -93,7 +93,7 @@ nsma_main <-
 #| message: false
 #| include: true
 #| fig-align: center
-#| fig-cap: Locations from Prince Edward Island National Park ARU Monitoring Program
+#| fig-cap: Locations from North Slave Métis Alliance ARU Monitoring Program
 #| label: fig-aru-monitoring-locations
 
 nsma_locs <- nsma_main |>
