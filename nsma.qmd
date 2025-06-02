@@ -7,7 +7,11 @@ format:
 navbar: right
 theme: cosmo
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-author: "Alex MacPhail"
+author: 
+  - name: "Alex MacPhail"
+    affiliation: "Biodiversity Pathways Ltd."
+  - name: "Orna Phelan"
+    affiliation: "North Slave Métis Alliance"
 editor: visual
 bibliography: references.bib
 nocite: '@*'
@@ -19,8 +23,7 @@ styles: styles.css
 github: https://github.com/biodiversitypathways/nsma
 ---
 
-![](./assets/slavelake.png){}
-
+![](./assets/slavelake.png)
 
 ```{r}
 #| label: load-packages and authenticate
@@ -58,14 +61,19 @@ load('nsma.RData')
 
 # Abstract
 
-Stay tuned for the results!
+The North Slave Métis Alliance deployed Autonomous Recording Units (ARUs) across `r nrow(locs_summary)` locations over three years to characterize the acoustic community. A total of `r nrow(distinct_spp)` species were detected, with species accumulation stabilizing as deployment coverage expanded. These results highlight the effectiveness of ARUs in detecting species and their potential to enhance species monitoring programs comprehensively. Continued long-term sampling and the inclusion of new locations reflecting the dynamic northern landscape are recommended to sustain and improve monitoring efforts.
+
+::: {.callout-note collapse="true" style="background-color: #f4f4f4; padding: 20px;"}
+This report is dynamically generated, meaning its results may evolve with the addition of new data or further analyses. For the most recent updates, refer to the publication date and feel free to reach out to the authors.
+:::
 
 ```{r Data download}
 #| warning: false
 #| message: false
 #| echo: true
 #| eval: false
-#| include: false
+#| include: true
+#| code-fold: true
 
 nsma_projects <- wildrtrax::wt_get_download_summary(sensor = 'ARU') |>
   filter(grepl('^North Slave', project)) |>
@@ -96,25 +104,26 @@ In 2023, the North Slave Métis Alliance initiated a program incorporating auton
 
 The report summarizes the collected from the ARUs by the NSMA from 2022 to 2024. To enhance accessibility and reproducibility, the findings will be presented in this online report with fully documented code, allowing future updates as data collection methods become standardized. Additionally, recommendations will be developed to refine data transcription priorities, improve annual reporting methods, and evaluate recommendations for long-term monitoring. The objectives of this report are to:
 
-- Document and standardize the data management and processing procedures for acoustic data collected to ensure consistency and reproducibility.
-- Provide a comprehensive report detailing all detected species and the abundance of individuals within the surveyed area.
-- Facilitate the publication of data, making it accessible to the community, public, resource managers, academic institutions, and other relevant agencies to promote transparency and collaboration.
-- Use evaluation results to establish robust metrics that can inform long-term monitoring and conservation strategies.
+-   Document and standardize the data management and processing procedures for acoustic data collected to ensure consistency and reproducibility.
+-   Provide a comprehensive report detailing all detected species and the abundance of individuals within the surveyed area.
+-   Facilitate the publication of data, making it accessible to the community, public, resource managers, academic institutions, and other relevant agencies to promote transparency and collaboration.
+-   Use evaluation results to establish robust metrics that can inform long-term monitoring and conservation strategies.
 
 # Methods
 
 Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. <mark>Sampling locations were strategically distributed to maximize coverage across these habitat types, enabling a comprehensive assessment of species diversity and abundance</mark>. Detailed coordinates and descriptions of the sampling locations are provided in @tbl-loc-summary. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbit Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
 
 ```{r}
-#| echo: false
-#| eval: true
 #| warning: false
+#| echo: true
+#| eval: true
 #| message: false
 #| include: true
+#| collapse: true
+#| code-fold: true
 #| fig-align: center
 #| fig-cap: Locations from North Slave Métis Alliance ARU Monitoring Program
 #| label: fig-aru-monitoring-locations
-#| code-fold: true
 
 nsma_locs <- nsma_main |>
   mutate(year = lubridate::year(recording_date_time)) |>
@@ -159,7 +168,6 @@ leaflet() %>%
   addMiniMap(position = "bottomleft")
 
 ```
-
 
 ```{r}
 #| warning: false
@@ -268,6 +276,7 @@ spp_rich_location <- nsma_main |>
 
 distinct_spp <- nsma_main |>
   as_tibble() |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F) |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(species_code) |>
   distinct() |>
@@ -391,7 +400,6 @@ datatable(guilds,
 
 ```
 
-
 ```{r}
 #| warning: false
 #| message: false
@@ -436,11 +444,6 @@ nsma_main |>
 
 ```
 
-
-
-
 # Discussion
 
 Stay tuned for the results!
-
-
