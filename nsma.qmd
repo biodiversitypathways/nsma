@@ -58,6 +58,8 @@ load('nsma.RData')
 
 # Abstract
 
+Stay tuned for the results!
+
 ```{r Data download}
 #| warning: false
 #| message: false
@@ -101,7 +103,7 @@ The report summarizes the collected from the ARUs by the NSMA for 2023 and 2024.
 
 # Methods
 
-Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types, enabling a comprehensive assessment of species diversity and abundance. Detailed coordinates and descriptions of the sampling locations are provided in Table [@tbl-loc-summary]. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbit Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
+Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. *Sampling locations were strategically distributed to maximize coverage across these habitat types, enabling a comprehensive assessment of species diversity and abundance*. Detailed coordinates and descriptions of the sampling locations are provided in Table [@tbl-loc-summary]. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbit Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
 
 ```{r}
 #| echo: false
@@ -112,6 +114,7 @@ Survey site selection was guided by the goal of capturing a representative sampl
 #| fig-align: center
 #| fig-cap: Locations from North Slave Métis Alliance ARU Monitoring Program
 #| label: fig-aru-monitoring-locations
+#| code-fold: true
 
 nsma_locs <- nsma_main |>
   mutate(year = lubridate::year(recording_date_time)) |>
@@ -156,6 +159,8 @@ leaflet() %>%
   addMiniMap(position = "bottomleft")
 
 ```
+
+
 ```{r}
 #| warning: false
 #| echo: true
@@ -179,7 +184,7 @@ datatable(locs_summary,
 
 ## Data management, processing and quality control
 
-A total of *12456* recordings were collected (see @fig-recs-collect). Data were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `PREDULE-LAKE-1_20230625_053500.wav`. Recordings were also directly uploaded to WildTrax and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
+A total of *12456* recordings were collected across all three years. Data were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `PREDULE-LAKE-1_20230625_053500.wav`. Recordings were also directly uploaded to WildTrax for processing and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
 
 ![Downloading a list of recordings from WildTrax](assets/download-recs.png){#fig-download-recs}
 
@@ -195,6 +200,7 @@ The principal goal for data processing was to describe the acoustic community of
 #| include: true
 #| label: tbl-verified
 #| tbl-cap: Proportion of tags verified
+#| code-fold: true
 
 all_tags <- nsma_main |> 
   tally() |>
@@ -218,6 +224,7 @@ kable(verified_tags)
 #| include: true
 #| label: tbl-tmtt
 #| tbl-cap: TMTT tags
+#| code-fold: true
 
 tmtt_tags <- nsma_main |>
   select(location, recording_date_time, species_code, individual_count) |>
@@ -228,6 +235,10 @@ kable(head(tmtt_tags))
 
 ```
 
+# Analysis
+
+We constructed a species accumulation curve using the `vegan` package in R to assess the sampling effort required to capture species richness. The analysis was based on a species-by-site matrix, employing a randomized accumulation method with 100 permutations to ensure robust estimation of species richness across increasing numbers of sampled sites.
+
 # Results
 
 ```{r}
@@ -236,6 +247,7 @@ kable(head(tmtt_tags))
 #| echo: false
 #| eval: true
 #| include: false
+#| code-fold: true
 
 spp_rich_location <- nsma_main |>
   as_tibble() |>
@@ -255,6 +267,8 @@ distinct_spp <- nsma_main |>
   arrange(species_code)
 ```
 
+Species richness increased at most locations sampled in 2024 compared to 2023, likely reflecting differences in sampling effort. For example, Boundary Creek 1 recorded an increase from 16 species in 2023 to 26 species in 2024, while Stagg River 1 increased from 23 to 25 species. Similarly, Tibbitt Lake 1 and Whatì saw notable increases, with species counts rising from 14 to 19 and 7 to 11, respectively. Locations sampled exclusively in 2024, such as Mosquito Creek 2 and Pauline Lake 3, recorded species counts of 3 and 7, respectively, adding to the overall species inventory. In contrast, smaller changes were observed at sites like Cameron River 1, where species richness increased from 8 to 10.
+
 ```{r}
 #| warning: false
 #| message: false
@@ -265,6 +279,7 @@ distinct_spp <- nsma_main |>
 #| fig-cap: Species richness at forest monitoring locations across years
 #| label: fig-spp-rich-locs
 #| cap-location: margin
+#| code-fold: true
 
 spp_rich_location |>
   ggplot(aes(x=as.factor(year), y=species_count, fill=as.factor(year), group=as.factor(year))) +
@@ -277,6 +292,8 @@ spp_rich_location |>
 
 ```
 
+The species accumulation curve revealed a steady increase in species richness with additional sampling sites, reaching a richness of 88 species at the final locations (*n* = 22). Standard deviations declined consistently with increasing sample size, reflecting greater precision in richness estimates as sampling effort increased. Richness values exhibited diminishing returns beyond approximately 15 locations, indicating that additional sampling yielded fewer new species. This plateau suggests that sampling effort was sufficient to capture most of the species present in the study area.
+
 ```{r}
 #| warning: false
 #| message: false
@@ -287,6 +304,7 @@ spp_rich_location |>
 #| fig-cap: Species accumulation curve
 #| label: fig-spp-accum
 #| cap-location: margin
+#| code-fold: true
 
 nsma_main <- nsma_main %>%
   mutate(year = as.numeric(format(as.Date(recording_date_time), "%Y")))
@@ -341,4 +359,81 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
 
 ```
 
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| label: tbl-bird-guilds
+#| tbl-cap: Common bird forest species guilds. For nesting habitat; Ag = Agricultural, Be = Beach, Bo = Bog, CW = Coniferous Woodlands, ES = Early Successional, MW = Mixed Woodlands, OW = Open Woodlands, TSS = Treed/Shrubby Swamp, Ur = Urban. Species from CW, MW, OW, TSS were used for analysis.
+#| code-fold: true
+
+guilds <- read_csv("bird_guilds.csv") |>
+  select(species_common_name, habitat_nesting) |>
+  filter(habitat_nesting %in% c("CW","MW","OW","TSS")) 
+
+datatable(guilds, 
+          options = list(
+            searching = TRUE,  
+            paging = TRUE,    
+            pageLength = 10   
+          )) |>
+  formatStyle(columns = colnames(guilds), 
+              backgroundColor = styleEqual(c("NA"), "lightgray"))  
+
+```
+
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-cap: Species activity
+#| label: fig-spp-activity
+#| cap-location: margin
+#| code-fold: true
+
+nsma_main |>
+  wt_tidy_species(remove = c("mammal", "amphibian", "abiotic", "insect", "unknown"), zerofill = F) |>
+  dplyr::select(location, recording_date_time, species_common_name, species_code, individual_count) |>
+  mutate(julian = lubridate::yday(recording_date_time),
+         month = month(recording_date_time),
+         year = factor(year(recording_date_time))) |>
+  group_by(species_code) |>
+  add_tally() |>
+  ungroup() |>
+  group_by(julian, species_code) |>
+  add_tally() |>
+  ungroup() |>
+  arrange(species_code) |>
+  mutate(recording_date_time = as.POSIXct(recording_date_time)) |>
+  inner_join(guilds |> select(species_common_name, habitat_nesting)) |>
+  mutate(habitat_nesting = case_when(
+    habitat_nesting == "CW" ~ "Coniferous Woodland",
+    habitat_nesting == "MW" ~ "Mixedwood",
+    habitat_nesting == "OW" ~ "Open Woodland",
+    habitat_nesting == "TSS" ~ "Tree Shrub / Swamp",
+    TRUE ~ "Undefined"
+  )) |>
+  rename("Nesting habitat" = habitat_nesting) |>
+  ggplot(aes(x = julian, y = species_common_name, fill = `Nesting habitat`)) + 
+  geom_density_ridges(scale = 3, rel_min_height = 0.005, alpha = 0.4) + 
+  scale_fill_viridis_d() +
+  theme_bw() +
+  xlab("Day of Year") + 
+  ylab("Species")
+
+```
+
+
+
+
 # Discussion
+
+Stay tuned for the results!
+
+

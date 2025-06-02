@@ -130,6 +130,7 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#data-management-processing-and-quality-control" id="toc-data-management-processing-and-quality-control" class="nav-link" data-scroll-target="#data-management-processing-and-quality-control">Data management, processing and quality control</a></li>
   </ul></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   </ul>
@@ -173,6 +174,7 @@ div.csl-indent {
 <p><img src="./assets/slavelake.png" class="img-fluid"></p>
 <section id="abstract" class="level1">
 <h1>Abstract</h1>
+<p>Stay tuned for the results!</p>
 </section>
 <section id="land-acknowledgement" class="level1">
 <h1>Land Acknowledgement</h1>
@@ -192,7 +194,7 @@ div.csl-indent {
 </section>
 <section id="methods" class="level1">
 <h1>Methods</h1>
-<p>Survey site selection was guided by the goal of capturing a representative sample of the region’s diverse habitats while considering logistical feasibility. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types, enabling a comprehensive assessment of species diversity and abundance. Detailed coordinates and descriptions of the sampling locations are provided in Table <a href="#tbl-loc-summary" class="quarto-xref">Table&nbsp;1</a>. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbit Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.</p>
+<p>Survey site selection was guided by the goal of capturing a representative sample of the region’s diverse habitats while considering logistical feasibility. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. <em>Sampling locations were strategically distributed to maximize coverage across these habitat types, enabling a comprehensive assessment of species diversity and abundance</em>. Detailed coordinates and descriptions of the sampling locations are provided in Table <a href="#tbl-loc-summary" class="quarto-xref">Table&nbsp;1</a>. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbit Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.</p>
 <div class="cell" data-layout-align="center">
 <div id="fig-aru-monitoring-locations" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -234,7 +236,7 @@ Table&nbsp;1: Locations surveyed across years. Ones indicated a deployment in th
 </div>
 <section id="data-management-processing-and-quality-control" class="level2">
 <h2 class="anchored" data-anchor-id="data-management-processing-and-quality-control">Data management, processing and quality control</h2>
-<p>A total of <em>12456</em> recordings were collected (see <strong>?@fig-recs-collect</strong>). Data were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of <code>LOCATION_DATETIME</code>, such as <code>PREDULE-LAKE-1_20230625_053500.wav</code>. Recordings were also directly uploaded to WildTrax and can be downloaded from the platform’s Recording tab, accessible under Manage &gt; Download list of recordings (see <a href="#fig-download-recs" class="quarto-xref">Figure&nbsp;2</a>).</p>
+<p>A total of <em>12456</em> recordings were collected across all three years. Data were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of <code>LOCATION_DATETIME</code>, such as <code>PREDULE-LAKE-1_20230625_053500.wav</code>. Recordings were also directly uploaded to WildTrax for processing and can be downloaded from the platform’s Recording tab, accessible under Manage &gt; Download list of recordings (see <a href="#fig-download-recs" class="quarto-xref">Figure&nbsp;2</a>).</p>
 <div id="fig-download-recs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-download-recs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -322,11 +324,16 @@ Table&nbsp;3: TMTT tags
 </div>
 </section>
 </section>
+<section id="analysis" class="level1">
+<h1>Analysis</h1>
+<p>We constructed a species accumulation curve using the <code>vegan</code> package in R to assess the sampling effort required to capture species richness. The analysis was based on a species-by-site matrix, employing a randomized accumulation method with 100 permutations to ensure robust estimation of species richness across increasing numbers of sampled sites.</p>
+</section>
 <section id="results" class="level1 page-columns page-full">
 <h1>Results</h1>
+<p>Species richness increased at most locations sampled in 2024 compared to 2023, likely reflecting differences in sampling effort. For example, Boundary Creek 1 recorded an increase from 16 species in 2023 to 26 species in 2024, while Stagg River 1 increased from 23 to 25 species. Similarly, Tibbitt Lake 1 and Whatì saw notable increases, with species counts rising from 14 to 19 and 7 to 11, respectively. Locations sampled exclusively in 2024, such as Mosquito Creek 2 and Pauline Lake 3, recorded species counts of 3 and 7, respectively, adding to the overall species inventory. In contrast, smaller changes were observed at sites like Cameron River 1, where species richness increased from 8 to 10.</p>
 <div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-rich-locs-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -338,9 +345,10 @@ Figure&nbsp;4: Species richness at forest monitoring locations across years
 </div>
 </div>
 </div>
+<p>The species accumulation curve revealed a steady increase in species richness with additional sampling sites, reaching a richness of 88 species at the final locations (<em>n</em> = 22). Standard deviations declined consistently with increasing sample size, reflecting greater precision in richness estimates as sampling effort increased. Richness values exhibited diminishing returns beyond approximately 15 locations, indicating that additional sampling yielded fewer new species. This plateau suggests that sampling effort was sufficient to capture most of the species present in the study area.</p>
 <div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-accum" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-accum" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-spp-accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-accum-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -352,13 +360,43 @@ Figure&nbsp;5: Species accumulation curve
 </div>
 </div>
 </div>
+<div class="cell">
+<div id="tbl-bird-guilds" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bird-guilds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Common bird forest species guilds. For nesting habitat; Ag = Agricultural, Be = Beach, Bo = Bog, CW = Coniferous Woodlands, ES = Early Successional, MW = Mixed Woodlands, OW = Open Woodlands, TSS = Treed/Shrubby Swamp, Ur = Urban. Species from CW, MW, OW, TSS were used for analysis.
+</figcaption>
+<div aria-describedby="tbl-bird-guilds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-fe2f0a881bca8623248d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-fe2f0a881bca8623248d">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48"],["Alder Flycatcher","American Redstart","Baltimore Oriole","Bay-breasted Warbler","Black-and-white Warbler","Black-backed Woodpecker","Black-throated Blue Warbler","Black-throated Green Warbler","Blackburnian Warbler","Blackpoll Warbler","Blue Jay","Blue-headed Vireo","Boreal Chickadee","Brown Creeper","Canada Jay","Canada Warbler","Cape May Warbler","Chestnut-sided Warbler","Chipping Sparrow","Common Nighthawk","Dark-eyed Junco","Downy Woodpecker","Eastern Wood-Pewee","Fox Sparrow","Golden-crowned Kinglet","Gray Catbird","Hairy Woodpecker","Hermit Thrush","Lincoln's Sparrow","Magnolia Warbler","Mountain Bluebird","Mourning Warbler","Northern Flicker","Northern Parula","Orange-crowned Warbler","Philadelphia Vireo","Pileated Woodpecker","Pine Warbler","Red-eyed Vireo","Ruby-crowned Kinglet","Ruffed Grouse","Rusty Blackbird","Swainson's Thrush","Veery","Warbling Vireo","Western Wood-Pewee","Yellow-bellied Sapsucker","Yellow-rumped Warbler"],["TSS","MW","OW","CW","MW","CW","MW","CW","CW","CW","OW","MW","CW","CW","CW","MW","CW","MW","OW","OW","CW","MW","OW","OW","CW","MW","MW","CW","TSS","MW","OW","MW","MW","OW","OW","MW","MW","CW","MW","CW","MW","TSS","MW","MW","MW","OW","MW","CW"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>species_common_name<\/th>\n      <th>habitat_nesting<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":true,"paging":true,"pageLength":10,"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"species_common_name","targets":1},{"name":"habitat_nesting","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == \"NA\" ? \"lightgray\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == \"NA\" ? \"lightgray\" : null});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="nsma_files/figure-html/fig-spp-activity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Species activity
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="discussion" class="level1 unnumbered">
-
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>Stay tuned for the results!</p>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Discussion</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-abrahms2023climate" class="csl-entry" role="listitem">
 Abrahms, Briana, Neil H Carter, TJ Clark-Wolf, Kaitlyn M Gaynor, Erik Johansson, Alex McInturff, Anna C Nisi, Kasim Rafiq, and Leigh West. 2023. <span>“Climate Change as a Global Amplifier of Human–Wildlife Conflict.”</span> <em>Nature Climate Change</em> 13 (3): 224–34.
 </div>
