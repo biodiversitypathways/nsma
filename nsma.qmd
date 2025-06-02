@@ -19,7 +19,7 @@ styles: styles.css
 github: https://github.com/biodiversitypathways/nsma
 ---
 
-![](){}
+![](./assets/slavelake.png){}
 
 
 ```{r}
@@ -88,7 +88,7 @@ We acknowledge the traditional lands and territories of the North Slave Métis A
 
 # Introduction
 
-Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). Climate change and increasing wildfire activity in the western and northern boreal have significantly impacted.
+Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). Climate change and increasing wildfire activity in the western and northern boreal have significantly impacted. Wildfire severity, intensified by climate change, significantly influences avian communities in northern boreal regions, with increasing severity favouring generalist and fire-specialist species while reducing species richness and functional diversity in sensitive habitats such as peatlands (@knaggs2020avian). Furthermore, efforts to use umbrella species, like woodland caribou, for boreal landbird conservation highlights the need for complementary conservation measures (@micheletti2023will) that work in tandem.
 
 In 2023, the North Slave Métis Alliance initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of the vocalizing wildlife. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to metrics that can be used to study species trends over time, whereby this data aids decision-making and management within the region. Given the rapid and ease of accumulating data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
 
@@ -101,7 +101,7 @@ The report summarizes the collected from the ARUs by the NSMA for 2023 and 2024.
 
 # Methods
 
-ARUs were deployed in 2023 and 2024. 2023 saw 8 locations surveyed between Whatì (63.10753, -116.9763) and Tibbit Lake (62.5474, -113.3551). In 2024, 12 sampling locations were surveyd with 4 additional sites. A summary of locations sampled can be found at 
+Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types, enabling a comprehensive assessment of species diversity and abundance. Detailed coordinates and descriptions of the sampling locations are provided in Table [@tbl-loc-summary]. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbit Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
 
 ```{r}
 #| echo: false
@@ -177,6 +177,57 @@ datatable(locs_summary,
               backgroundColor = styleEqual(c("NA"), "lightgray"))  
 ```
 
+## Data management, processing and quality control
+
+A total of *12456* recordings were collected (see @fig-recs-collect). Data were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `PREDULE-LAKE-1_20230625_053500.wav`. Recordings were also directly uploaded to WildTrax and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
+
+![Downloading a list of recordings from WildTrax](assets/download-recs.png){#fig-download-recs}
+
+The principal goal for data processing was to describe the acoustic community of species heard at locations while choosing a large enough subset of recordings for analyses. To ensure balanced replication, for each location and year surveyed, four randomly selected recordings were processed for 3-minutes between the hours of 3:00 AM - 7:59 AM ideally on four separate dates. Four recordings ensures that there is minimum number of samples for a simple occupancy analysis (@mackenzie2002estimating and @imperfect-occu). Tags are made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT ('too many to tag') flag was used (see @tbl-tmtt). `r round(nrow(tmtt_tags)/nrow(nsma_main),2)*100`% of the total tags were TMTT but were subsequently converted to numeric using `wildrtrax::wt_replace_tmtt`. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(3) |> pull()`) to ensure accuracy of detections (see @tbl-verified). Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Mammals such as Red Squirrel, were also noted on the recordings. After the data are processed in WildTrax, the [wildrtrax](https://abbiodiversity.github.io/wildrtrax/) package is use to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildrtrax APIs](https://abbiodiversity.github.io/wildrtrax/articles/apis.html)).
+
+![WildTrax Acoustic Processing Interface (Version 1)](assets/acousticprocessing.png){#fig-acousticprocessing .float-left .fig-align-center}
+
+```{r}
+#| warning: false
+#| echo: false
+#| message: false
+#| eval: true
+#| include: true
+#| label: tbl-verified
+#| tbl-cap: Proportion of tags verified
+
+all_tags <- nsma_main |> 
+  tally() |>
+  pull()
+
+verified_tags <- nsma_main |>
+  group_by(tag_is_verified) |>
+  tally() |>
+  mutate(Proportion = round(n / all_tags,4)*100) |>
+  rename("Count" = n) |>
+  rename("Tag is verified" = tag_is_verified)
+
+kable(verified_tags)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| message: false
+#| eval: true
+#| include: true
+#| label: tbl-tmtt
+#| tbl-cap: TMTT tags
+
+tmtt_tags <- nsma_main |>
+  select(location, recording_date_time, species_code, individual_count) |>
+  distinct() |>
+  filter(individual_count == "TMTT")
+
+kable(head(tmtt_tags))
+
+```
+
 
 # Results
 
@@ -222,9 +273,66 @@ spp_rich_location |>
   geom_point(alpha = 0.7) +
   theme_bw() +
   scale_fill_viridis_d() +
-  xlab('Year') + ylab('Species richness') +
+  xlab('Year') + ylab('Species richness') + labs(fill = "Year") +
   ggtitle('Species richness at each location surveyed for each year')
 
 ```
+
+```{r}
+
+nsma_main <- nsma_main %>%
+  mutate(year = as.numeric(format(as.Date(recording_date_time), "%Y")))
+
+# Create a species-by-site matrix for each year
+species_matrix <- nsma_main %>%
+  group_by(year, location, species_code) %>%
+  summarise(individual_count = max(individual_order, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(
+    names_from = species_code,
+    values_from = individual_count,
+    values_fill = 0
+  ) %>%
+  select(-year, -location) %>%
+  as.matrix()
+
+# Accumulation curve using vegan
+spec_accum <- specaccum(species_matrix, method = "random")
+
+sites <- spec_accum$sites
+richness <- spec_accum$richness
+sd <- spec_accum$sd
+
+# Create a dataframe for plotting
+accum_data <- data.frame(
+  Sites = sites,
+  Richness = richness,
+  SD = sd
+)
+
+# Calculate upper and lower bounds for richness
+accum_data <- accum_data %>%
+  mutate(
+    Lower = Richness - SD,
+    Upper = Richness + SD
+  )
+
+# Plot using ggplot2
+ggplot(accum_data, aes(x = Sites, y = Richness)) +
+  geom_line(color = "blue", size = 1) +
+  geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = "lightblue", alpha = 0.4) +
+  labs(
+    title = "Species Accumulation Curve",
+    x = "Number of Sites",
+    y = "Cumulative Number of Species"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 14)
+  )
+
+```
+
+
 
 # Discussion
