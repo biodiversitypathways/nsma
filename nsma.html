@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Alex MacPhail">
-<meta name="dcterms.date" content="2025-05-07">
+<meta name="dcterms.date" content="2025-06-02">
 
 <title>Report on the use of passive acoustic monitoring for the North Slave Métis Alliance</title>
 <style>
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -70,6 +104,13 @@ div.csl-indent {
 <link href="nsma_files/libs/leaflet-minimap-3.3.1/Control.MiniMap.min.css" rel="stylesheet">
 <script src="nsma_files/libs/leaflet-minimap-3.3.1/Control.MiniMap.min.js"></script>
 <script src="nsma_files/libs/leaflet-minimap-3.3.1/Minimap-binding.js"></script>
+<link href="nsma_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="nsma_files/libs/datatables-binding-0.33/datatables.js"></script>
+<link href="nsma_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="nsma_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="nsma_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="nsma_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="nsma_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 
 
 </head>
@@ -83,6 +124,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#land-acknowledgement" id="toc-land-acknowledgement" class="nav-link" data-scroll-target="#land-acknowledgement">Land Acknowledgement</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
@@ -113,7 +155,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 7, 2025</p>
+      <p class="date">June 2, 2025</p>
     </div>
   </div>
   
@@ -129,21 +171,61 @@ div.csl-indent {
 <section id="abstract" class="level1">
 <h1>Abstract</h1>
 </section>
+<section id="land-acknowledgement" class="level1">
+<h1>Land Acknowledgement</h1>
+<p>We acknowledge the traditional lands and territories of the North Slave Métis Alliance (NSMA), whose members trace their origins to the early unions of French fur-traders and Indigenous women of the Great Slave Lake region. The Métis of this area have long existed as a distinct and vibrant community, exercising their harvesting rights across the Northwest Territories and beyond. We honor their continued stewardship of these lands and their rights recognized under section 35(1) of the Constitution Act, 1982.</p>
+</section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
+<p>Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (<span class="citation" data-cites="allan2017recent">Allan et al. (<a href="#ref-allan2017recent" role="doc-biblioref">2017</a>)</span>). The repercussions of habitat fragmentation (<span class="citation" data-cites="fahrig2003effects">Fahrig (<a href="#ref-fahrig2003effects" role="doc-biblioref">2003</a>)</span>) and loss (<span class="citation" data-cites="hanski2011habitat">Hanski (<a href="#ref-hanski2011habitat" role="doc-biblioref">2011</a>)</span>), climate change (<span class="citation" data-cites="mantyka2012interactions">Mantyka-pringle, Martin, and Rhodes (<a href="#ref-mantyka2012interactions" role="doc-biblioref">2012</a>)</span>, <span class="citation" data-cites="sattar2021review">Sattar et al. (<a href="#ref-sattar2021review" role="doc-biblioref">2021</a>)</span>, <span class="citation" data-cites="abrahms2023climate">Abrahms et al. (<a href="#ref-abrahms2023climate" role="doc-biblioref">2023</a>)</span>), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (<span class="citation" data-cites="lemieux2011state">Lemieux et al. (<a href="#ref-lemieux2011state" role="doc-biblioref">2011</a>)</span>). Climate change and increasing wildfire activity in the western and northern boreal have significantly impacted.</p>
+<p>In 2023, the North Slave Métis Alliance initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of the vocalizing wildlife. ARUs are compact environmental sensors that are designed to passively record the environment (<span class="citation" data-cites="aru-overview">Shonfield and Bayne (<a href="#ref-aru-overview" role="doc-biblioref">2017</a>)</span>), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (<span class="citation" data-cites="lots-of-pam">Sugai et al. (<a href="#ref-lots-of-pam" role="doc-biblioref">2018</a>)</span>). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to metrics that can be used to study species trends over time, whereby this data aids decision-making and management within the region. Given the rapid and ease of accumulating data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. <a href="https://www.wildtrax.ca">WildTrax</a> is an online platform developed by the <a href="https://abmi.ca">Alberta Biodiversity Monitoring Institute (<strong>ABMI</strong>)</a> for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.</p>
+<p>The report summarizes the collected from the ARUs by the NSMA for 2023 and 2024. To enhance accessibility and reproducibility, the findings will be presented in this online report with fully documented code, allowing future updates as data collection methods become standardized. Additionally, recommendations will be developed to refine data transcription priorities, improve annual reporting methods, and evaluate recommendations for long-term monitoring. The objectives of this report are to:</p>
+<ul>
+<li>Document and standardize the data management and processing procedures for acoustic data collected from 2023 to 2024 to ensure consistency and reproducibility.</li>
+<li>Provide a comprehensive report detailing all detected species and the abundance of individuals within the surveyed area.</li>
+<li>Facilitate the publication of data, making it accessible to the community, public, resource managers, academic institutions, and other relevant agencies to promote transparency and collaboration.</li>
+<li>Use evaluation results to establish robust metrics that can inform long-term monitoring and conservation strategies.</li>
+</ul>
 </section>
 <section id="methods" class="level1">
 <h1>Methods</h1>
+<p>ARUs were deployed in 2023 and 2024. 2023 saw 8 locations surveyed between Whatì (63.10753, -116.9763) and Tibbit Lake (62.5474, -113.3551). In 2024, 12 sampling locations were surveyd with 4 additional sites. A summary of locations sampled can be found at</p>
 <div class="cell" data-layout-align="center">
 <div id="fig-aru-monitoring-locations" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-aru-monitoring-locations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="leaflet html-widget html-fill-item" id="htmlwidget-85ba397b5cedb95d324e" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-85ba397b5cedb95d324e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[[62.534174,62.49338,62.78182,62.534174,62.647492,62.650842,62.744257,62.547402,63.107529,62.525606,62.480933,62.534174,62.49338,62.78182,62.693669,62.058333,62.556306,62.556306,62.744257,62.547402,63.107529,62.525576],[-114.971513,-113.523101,-115.96222,-114.971513,-115.819763,-115.818671,-115.730311,-113.355105,-116.976336,-114.322183,-114.366678,-114.971513,-113.523101,-115.96222,-116.153511,-113.201111,-113.998146,-113.998146,-115.730311,-113.355105,-116.976336,-114.322165],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Location: BOUNDARY-CREEK-1 <br>","Location: CAMERON-RIVER-1 <br>","Location: FRANK-CHANNEL <br>","Location: MOSQUITO-CREEK-1 <br>","Location: OFR-2 <br>","Location: OLD-FORT-RAE_1 <br>","Location: STAGG-RIVER-1 <br>","Location: TIBBIT-LAKE-1 <br>","Location: WHATI <br>","Location: YELLOWKNIFE-RIVER-1 <br>","Location: BAKER-CREEK <br>","Location: BOUNDARY-CREEK-1 <br>","Location: CAMERON-RIVER-1 <br>","Location: FRANK-CHANNEL <br>","Location: MOSQUITO-CREEK-2 <br>","Location: PAULINE-LAKE-3 <br>","Location: PRELUDE-LAKE-1 <br>","Location: PRELUDE-LAKE-2 <br>","Location: STAGG-RIVER-1 <br>","Location: TIBBIT-LAKE-1 <br>","Location: WHATI <br>","Location: YELLOWKNIFE-RIVER-2 <br>"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMeasure","args":[{"position":"topright","primaryLengthUnit":"feet","primaryAreaUnit":"acres","activeColor":"#ABE67E","completedColor":"#C8F2BE","popupOptions":{"className":"leaflet-measure-resultpopup","autoPanPadding":[10,10]},"captureZIndex":10000,"localization":"en","decPoint":".","thousandsSep":","}]},{"method":"addMiniMap","args":[null,null,"bottomleft",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"limits":{"lat":[62.058333,63.107529],"lng":[-116.976336,-113.201111]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-85ba397b5cedb95d324e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[62.647492,62.650842],[-115.819763,-115.818671],10,null,"2022 Locations",{"interactive":true,"className":"","stroke":true,"color":"yellow","weight":5,"opacity":0.5,"fill":true,"fillColor":"yellow","fillOpacity":0.2},null,null,["Location: OFR-2","Location: OLD-FORT-RAE_1"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[62.534174,62.49338,62.78182,62.534174,62.744257,62.547402,63.107529,62.525606],[-114.971513,-113.523101,-115.96222,-114.971513,-115.730311,-113.355105,-116.976336,-114.322183],10,null,"2023 Locations",{"interactive":true,"className":"","stroke":true,"color":"blue","weight":5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},null,null,["Location: BOUNDARY-CREEK-1","Location: CAMERON-RIVER-1","Location: FRANK-CHANNEL","Location: MOSQUITO-CREEK-1","Location: STAGG-RIVER-1","Location: TIBBIT-LAKE-1","Location: WHATI","Location: YELLOWKNIFE-RIVER-1"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[62.480933,62.534174,62.49338,62.78182,62.693669,62.058333,62.556306,62.556306,62.744257,62.547402,63.107529,62.525576],[-114.366678,-114.971513,-113.523101,-115.96222,-116.153511,-113.201111,-113.998146,-113.998146,-115.730311,-113.355105,-116.976336,-114.322165],10,null,"2024 Locations",{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,["Location: BAKER-CREEK","Location: BOUNDARY-CREEK-1","Location: CAMERON-RIVER-1","Location: FRANK-CHANNEL","Location: MOSQUITO-CREEK-2","Location: PAULINE-LAKE-3","Location: PRELUDE-LAKE-1","Location: PRELUDE-LAKE-2","Location: STAGG-RIVER-1","Location: TIBBIT-LAKE-1","Location: WHATI","Location: YELLOWKNIFE-RIVER-2"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[[],["2022 Locations","2023 Locations","2024 Locations"],{"collapsed":false,"autoZIndex":true,"position":"topright"}]},{"method":"addMeasure","args":[{"position":"topright","primaryLengthUnit":"feet","primaryAreaUnit":"acres","activeColor":"#ABE67E","completedColor":"#C8F2BE","popupOptions":{"className":"leaflet-measure-resultpopup","autoPanPadding":[10,10]},"captureZIndex":10000,"localization":"en","decPoint":".","thousandsSep":","}]},{"method":"addMiniMap","args":[null,null,"bottomleft",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"limits":{"lat":[62.058333,63.107529],"lng":[-116.976336,-113.201111]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-aru-monitoring-locations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Locations from North Slave Métis Alliance ARU Monitoring Program
 </figcaption>
+</figure>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(locs_summary, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">searching =</span> <span class="cn">TRUE</span>,  </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">paging =</span> <span class="cn">TRUE</span>,    </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">pageLength =</span> <span class="dv">10</span>   </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>          )) <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatStyle</span>(<span class="at">columns =</span> <span class="fu">colnames</span>(locs_summary), </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">backgroundColor =</span> <span class="fu">styleEqual</span>(<span class="fu">c</span>(<span class="st">"NA"</span>), <span class="st">"lightgray"</span>))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-loc-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-loc-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Locations surveyed across years. Ones indicated a deployment in that year for that location.
+</figcaption>
+<div aria-describedby="tbl-loc-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-220207ae47c3155ee0c1" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-220207ae47c3155ee0c1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],["OFR-2","OLD-FORT-RAE_1","BOUNDARY-CREEK-1","CAMERON-RIVER-1","FRANK-CHANNEL","MOSQUITO-CREEK-1","STAGG-RIVER-1","TIBBIT-LAKE-1","WHATI","YELLOWKNIFE-RIVER-1","BAKER-CREEK","MOSQUITO-CREEK-2","PAULINE-LAKE-3","PRELUDE-LAKE-1","PRELUDE-LAKE-2","YELLOWKNIFE-RIVER-2"],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Location<\/th>\n      <th>2022<\/th>\n      <th>2023<\/th>\n      <th>2024<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":true,"paging":true,"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Location","targets":1},{"name":"2022","targets":2},{"name":"2023","targets":3},{"name":"2024","targets":4}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == \"NA\" ? \"lightgray\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == \"NA\" ? \"lightgray\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == \"NA\" ? \"lightgray\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == \"NA\" ? \"lightgray\" : null});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
 </figure>
 </div>
 </div>
@@ -152,7 +234,7 @@ Figure&nbsp;1: Locations from North Slave Métis Alliance ARU Monitoring Program
 <h1>Results</h1>
 <div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-rich-locs-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">

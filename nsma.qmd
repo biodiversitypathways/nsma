@@ -82,9 +82,26 @@ nsma_main <-
   )
 ```
 
+# Land Acknowledgement
+
+We acknowledge the traditional lands and territories of the North Slave Métis Alliance (NSMA), whose members trace their origins to the early unions of French fur-traders and Indigenous women of the Great Slave Lake region. The Métis of this area have long existed as a distinct and vibrant community, exercising their harvesting rights across the Northwest Territories and beyond. We honor their continued stewardship of these lands and their rights recognized under section 35(1) of the Constitution Act, 1982.
+
 # Introduction
 
+Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). Climate change and increasing wildfire activity in the western and northern boreal have significantly impacted.
+
+In 2023, the North Slave Métis Alliance initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of the vocalizing wildlife. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to metrics that can be used to study species trends over time, whereby this data aids decision-making and management within the region. Given the rapid and ease of accumulating data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
+
+The report summarizes the collected from the ARUs by the NSMA for 2023 and 2024. To enhance accessibility and reproducibility, the findings will be presented in this online report with fully documented code, allowing future updates as data collection methods become standardized. Additionally, recommendations will be developed to refine data transcription priorities, improve annual reporting methods, and evaluate recommendations for long-term monitoring. The objectives of this report are to:
+
+- Document and standardize the data management and processing procedures for acoustic data collected from 2023 to 2024 to ensure consistency and reproducibility.
+- Provide a comprehensive report detailing all detected species and the abundance of individuals within the surveyed area.
+- Facilitate the publication of data, making it accessible to the community, public, resource managers, academic institutions, and other relevant agencies to promote transparency and collaboration.
+- Use evaluation results to establish robust metrics that can inform long-term monitoring and conservation strategies.
+
 # Methods
+
+ARUs were deployed in 2023 and 2024. 2023 saw 8 locations surveyed between Whatì (63.10753, -116.9763) and Tibbit Lake (62.5474, -113.3551). In 2024, 12 sampling locations were surveyd with 4 additional sites. A summary of locations sampled can be found at 
 
 ```{r}
 #| echo: false
@@ -112,13 +129,54 @@ locs_summary <- nsma_locs |>
   pivot_wider(names_from = year, values_from = value, values_fill = 0) |>
   rename('Location' = location)
 
+nsma_locs_2022 <- nsma_locs |> filter(year == 2022)
+nsma_locs_2023 <- nsma_locs |> filter(year == 2023)
+nsma_locs_2024 <- nsma_locs |> filter(year == 2024)
+
+# Create leaflet map with layer groups
 leaflet() %>%
   addTiles() %>%
-  addMarkers(data = nsma_locs, popup = paste("Location:", nsma_locs$location, "<br>")) %>%
+  addCircleMarkers(data = nsma_locs_2022, 
+                   color = "yellow", 
+                   group = "2022 Locations",
+                   popup = ~paste("Location:", location)) %>%
+  addCircleMarkers(data = nsma_locs_2023, 
+                   color = "blue", 
+                   group = "2023 Locations",
+                   popup = ~paste("Location:", location)) %>%
+  addCircleMarkers(data = nsma_locs_2024, 
+                   color = "red", 
+                   group = "2024 Locations",
+                   popup = ~paste("Location:", location)) %>%
+  addLayersControl(
+    overlayGroups = c("2022 Locations", "2023 Locations", "2024 Locations"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
   addMeasure() %>%
   addMiniMap(position = "bottomleft")
 
 ```
+```{r}
+#| warning: false
+#| echo: true
+#| eval: true
+#| message: false
+#| include: true
+#| label: tbl-loc-summary
+#| collapse: true
+#| code-fold: true
+#| tbl-cap: Locations surveyed across years. Ones indicated a deployment in that year for that location.
+
+datatable(locs_summary, 
+          options = list(
+            searching = TRUE,  
+            paging = TRUE,    
+            pageLength = 10   
+          )) |>
+  formatStyle(columns = colnames(locs_summary), 
+              backgroundColor = styleEqual(c("NA"), "lightgray"))  
+```
+
 
 # Results
 
