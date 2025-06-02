@@ -228,7 +228,6 @@ kable(head(tmtt_tags))
 
 ```
 
-
 # Results
 
 ```{r}
@@ -279,6 +278,15 @@ spp_rich_location |>
 ```
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-cap: Species accumulation curve
+#| label: fig-spp-accum
+#| cap-location: margin
 
 nsma_main <- nsma_main %>%
   mutate(year = as.numeric(format(as.Date(recording_date_time), "%Y")))
@@ -332,7 +340,5 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
   )
 
 ```
-
-
 
 # Discussion
