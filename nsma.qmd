@@ -23,7 +23,7 @@ styles: styles.css
 github: https://github.com/biodiversitypathways/nsma
 ---
 
-![](./assets/slavelake.png)
+![Forest near Behchoko, NWT. Credit Michelle Knaggs.](./assets/slavelake.png)
 
 ```{r}
 #| label: load-packages and authenticate
@@ -36,22 +36,12 @@ github: https://github.com/biodiversitypathways/nsma
 library(tidyverse)
 library(leaflet)
 library(wildrtrax)
-library(unmarked)
 library(sf)
-library(terra)
-library(vctrs)
 library(ggridges)
-library(scales)
 library(kableExtra)
 library(plotly)
 library(DT)
-library(lme4)
-library(ggpubr)
 library(vegan)
-library(MuMIn)
-library(ggmagnify)
-library(AICcmodavg)
-library(broom)
 
 wt_auth(force = T)
 
@@ -61,7 +51,7 @@ load('nsma.RData')
 
 # Abstract
 
-The North Slave Métis Alliance deployed Autonomous Recording Units (ARUs) across `r nrow(locs_summary)` locations over three years to characterize the acoustic community. A total of `r nrow(distinct_spp)` species were detected, with species accumulation stabilizing as deployment coverage expanded. These results highlight the effectiveness of ARUs in detecting species and their potential to enhance species monitoring programs comprehensively. Continued long-term sampling and the inclusion of new locations reflecting the dynamic northern landscape are recommended to sustain and improve monitoring efforts.
+The North Slave Métis Alliance deployed Autonomous Recording Units (ARUs) across `r nrow(locs_summary)` locations over three years to characterize the acoustic community. This project is part of a larger community based monitoring program of the NSMA Guardianship Program that involves using game cameras, ARUs, water quality sampling and eDNA to assess biodiversity in the North Slave Region. A total of `r nrow(distinct_spp)` species were detected by ARUs, with species accumulation stabilizing as deployment coverage expanded. These results highlight the effectiveness of ARUs in detecting species and their potential to enhance species monitoring programs comprehensively. Continued long-term sampling and the inclusion of new locations reflecting the dynamic northern landscape are recommended to sustain and improve monitoring efforts.
 
 ::: {.callout-note collapse="true" style="background-color: #f4f4f4; padding: 20px;"}
 This report is dynamically generated, meaning its results may evolve with the addition of new data or further analyses. For the most recent updates, refer to the publication date and feel free to reach out to the authors.
@@ -98,11 +88,11 @@ We acknowledge the traditional lands and territories of the North Slave Métis A
 
 # Introduction
 
-Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). Climate change and increasing wildfire activity in the western and northern boreal have significantly impacted. Wildfire severity, intensified by climate change, significantly influences avian communities in northern boreal regions, with increasing severity favouring generalist and fire-specialist species while reducing species richness and functional diversity in sensitive habitats such as peatlands (@knaggs2020avian). Furthermore, efforts to use umbrella species, like woodland caribou, for boreal landbird conservation highlights the need for complementary conservation measures (@micheletti2023will) that work in tandem.
+Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). Climate change and increasing wildfire activity in the western and northern boreal have significantly impacted biodiversity and species interactions in this area. Wildfire severity, intensified by climate change, significantly influences avian communities in northern boreal regions, with increasing severity favouring generalist and fire-specialist species while reducing species richness and functional diversity in sensitive habitats such as peatlands (@knaggs2020avian). Furthermore, efforts to use umbrella species, like woodland caribou, for boreal landbird conservation highlights the need for complementary conservation measures (@micheletti2023will) that work in tandem.
 
 In 2023, the North Slave Métis Alliance initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of the vocalizing wildlife. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to metrics that can be used to study species trends over time, whereby this data aids decision-making and management within the region. Given the rapid and ease of accumulating data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
 
-The report summarizes the collected from the ARUs by the NSMA from 2022 to 2024. To enhance accessibility and reproducibility, the findings will be presented in this online report with fully documented code, allowing future updates as data collection methods become standardized. Additionally, recommendations will be developed to refine data transcription priorities, improve annual reporting methods, and evaluate recommendations for long-term monitoring. The objectives of this report are to:
+The report summarizes the data collected from the ARUs by the NSMA from 2022 to 2024. To enhance accessibility and reproducibility, the findings will be presented in this online report with fully documented code, allowing future updates as data collection methods become standardized. Additionally, recommendations will be developed to refine data transcription priorities, improve annual reporting methods, and evaluate recommendations for long-term monitoring. The objectives of this report are to:
 
 -   Document and standardize the data management and processing procedures for acoustic data collected to ensure consistency and reproducibility.
 -   Provide a comprehensive report detailing all detected species and the abundance of individuals within the surveyed area.
@@ -111,7 +101,7 @@ The report summarizes the collected from the ARUs by the NSMA from 2022 to 2024.
 
 # Methods
 
-Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. <mark>Sampling locations were strategically distributed to maximize coverage across these habitat types, enabling a comprehensive assessment of species diversity and abundance</mark>. Detailed coordinates and descriptions of the sampling locations are provided in @tbl-loc-summary. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbit Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
+Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. In addition, NSMA member’s Traditional Knowledge of the land and historical distribution of species at risk was incorporated into the study design. Several NSMA members were interviewed and asked to identify areas of interest for sampling based on the following criteria: 1) current or historical presence of the target species at risk in the North Slave region; 2) locations of importance to traditional harvesting of NSMA membership and 3)  locations where multiple species, SAR or non-SAR, are present. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types while also sampling areas of importance to NSMA members, enabling a comprehensive assessment of species diversity and abundance. Detailed coordinates and descriptions of the sampling locations are provided in @tbl-loc-summary. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbitt Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
 
 ```{r}
 #| warning: false
@@ -194,7 +184,7 @@ Media were transferred via hard drive to the University of Alberta in Edmonton, 
 
 ![Downloading a list of recordings from WildTrax](assets/download-recs.png){#fig-download-recs}
 
-The principal goal for data processing was to describe the acoustic community of species heard at locations while choosing a large enough subset of recordings for analyses. To ensure balanced replication, for each location and year surveyed, four randomly selected recordings were processed for 3-minutes between the hours of 3:00 AM - 7:59 AM ideally on four separate dates. Four recordings ensures that there is minimum number of samples for a simple occupancy analysis (@mackenzie2002estimating and @imperfect-occu). Tags are made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(3) |> pull()`) to ensure accuracy of detections (see @tbl-verified). Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Mammals such as Red Squirrel, were also noted on the recordings. After the data are processed in WildTrax, the [wildrtrax](https://abbiodiversity.github.io/wildrtrax/) package is use to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildrtrax APIs](https://abbiodiversity.github.io/wildrtrax/articles/apis.html)).
+The principal goal for data processing was to describe the acoustic community of species heard at locations while choosing a large enough subset of recordings for analyses. To ensure balanced replication, for each location and year surveyed, four randomly selected recordings were processed for 3-minutes between the hours of 3:00 AM - 7:59 AM ideally on four separate dates. Four recordings ensures that there is minimum number of samples for a simple occupancy analysis (@mackenzie2002estimating and @imperfect-occu). Tags are made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(3) |> pull()`) to ensure accuracy of detections (see @tbl-verified). Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Mammals such as Red Squirrel, were also noted on the recordings. After the data are processed in WildTrax, the [wildrtrax](https://abbiodiversity.github.io/wildrtrax/) package is used to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildrtrax APIs](https://abbiodiversity.github.io/wildrtrax/articles/apis.html)).
 
 ![WildTrax Acoustic Processing Interface (Version 1)](assets/acousticprocessing.png){#fig-acousticprocessing .float-left .fig-align-center}
 
@@ -308,7 +298,9 @@ spp_rich_location |>
 
 ```
 
-The species accumulation curve revealed a steady increase in species richness with additional sampling sites, reaching a richness of 88 species at the final locations (*n* = 22). Standard deviations declined consistently with increasing sample size, reflecting greater precision in richness estimates as sampling effort increased. Richness values exhibited diminishing returns beyond approximately 15 locations, indicating that additional sampling yielded fewer new species. This plateau suggests that sampling effort was sufficient to capture most of the species present in the study area.
+## Species accumulation
+
+The species accumulation curve revealed a steady increase in species richness with additional sampling sites, reaching a richness of 88 species at the maximum total of locations surveyed (*n* = 22). Standard deviations declined consistently with increasing sample size, reflecting greater precision in richness estimates as sampling effort increased. Richness values exhibited diminishing returns beyond approximately 15 locations, indicating that additional sampling yielded fewer new species for the habitats surveyed. This plateau suggests that sampling effort was sufficient to capture most vocalizing species present in the study area.
 
 ```{r}
 #| warning: false
@@ -322,11 +314,23 @@ The species accumulation curve revealed a steady increase in species richness wi
 #| cap-location: margin
 #| code-fold: true
 
-nsma_main <- nsma_main %>%
-  mutate(year = as.numeric(format(as.Date(recording_date_time), "%Y")))
+# Identify the first detection site for each species
+first_detection <- nsma_main %>%
+  group_by(species_code) %>%
+  arrange(recording_date_time) %>%
+  summarise(
+    FirstSite = first(location),
+    FirstDate = first(recording_date_time),
+    .groups = "drop"
+  )
 
-# Create a species-by-site matrix for each year
-species_matrix <- nsma_main %>%
+# Add a column indicating whether each site was the first detection for any species
+nsma_main2 <- nsma_main %>%
+  left_join(first_detection, by = "species_code") %>%
+  mutate(IsFirstDetection = location == FirstSite)
+
+# Create species-by-site matrix
+species_matrix <- nsma_main2 %>%
   group_by(year, location, species_code) %>%
   summarise(individual_count = max(individual_order, na.rm = TRUE), .groups = "drop") %>%
   pivot_wider(
@@ -340,30 +344,39 @@ species_matrix <- nsma_main %>%
 # Accumulation curve using vegan
 spec_accum <- specaccum(species_matrix, method = "random")
 
-sites <- spec_accum$sites
-richness <- spec_accum$richness
-sd <- spec_accum$sd
-
-# Create a dataframe for plotting
+# Create dataframe for plotting accumulation curve
 accum_data <- data.frame(
-  Sites = sites,
-  Richness = richness,
-  SD = sd
-)
-
-# Calculate upper and lower bounds for richness
-accum_data <- accum_data %>%
+  Sites = spec_accum$sites,
+  Richness = spec_accum$richness,
+  SD = spec_accum$sd
+) %>%
   mutate(
     Lower = Richness - SD,
     Upper = Richness + SD
   )
 
-# Plot using ggplot2
+# Prepare first detection data for plotting
+first_detection_data <- first_detection %>%
+  mutate(SiteOrder = match(FirstSite, unique(nsma_main$location))) %>%
+  left_join(accum_data, by = c("SiteOrder" = "Sites"))
+
+# Plot the accumulation curve with first detections
 ggplot(accum_data, aes(x = Sites, y = Richness)) +
   geom_line(color = "blue", size = 1) +
   geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = "lightblue", alpha = 0.4) +
+  geom_point(
+    data = first_detection_data,
+    aes(x = SiteOrder, y = Richness),
+    size = 3
+  ) +
+  geom_text(
+    data = first_detection_data,
+    aes(x = SiteOrder, y = Richness, label = species_code),
+    nudge_y = 2, # Adjust to move text slightly above the points
+    size = 3
+  ) +
   labs(
-    title = "Species Accumulation Curve",
+    title = "Species Accumulation Curve with First Detection Sites",
     x = "Number of Sites",
     y = "Cumulative Number of Species"
   ) +
@@ -373,7 +386,11 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
     axis.title = element_text(size = 14)
   )
 
+
+
 ```
+
+## Species through the season
 
 ```{r}
 #| warning: false
@@ -387,7 +404,8 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
 
 guilds <- read_csv("bird_guilds.csv") |>
   select(species_common_name, habitat_nesting) |>
-  filter(habitat_nesting %in% c("CW","MW","OW","TSS")) 
+  inner_join(nsma_main |> select(species_common_name) |> distinct(), by = c("species_common_name")) |>
+  filter(!is.na(habitat_nesting))
 
 datatable(guilds, 
           options = list(
@@ -432,11 +450,16 @@ nsma_main |>
     habitat_nesting == "MW" ~ "Mixedwood",
     habitat_nesting == "OW" ~ "Open Woodland",
     habitat_nesting == "TSS" ~ "Tree Shrub / Swamp",
+    habitat_nesting == "Bo" ~ "Bog",
+    habitat_nesting == "Ma" ~ "Marsh",
+    habitat_nesting == "Ur" ~ "Urban",
+    habitat_nesting == "ES" ~ "Edge / Shrubs",
+    habitat_nesting == "Be" ~ "Be",
     TRUE ~ "Undefined"
   )) |>
   rename("Nesting habitat" = habitat_nesting) |>
   ggplot(aes(x = julian, y = species_common_name, fill = `Nesting habitat`)) + 
-  geom_density_ridges(scale = 3, rel_min_height = 0.005, alpha = 0.4) + 
+  geom_density_ridges(scale = 4, rel_min_height = 0.005, alpha = 0.4) + 
   scale_fill_viridis_d() +
   theme_bw() +
   xlab("Day of Year") + 
@@ -444,6 +467,75 @@ nsma_main |>
 
 ```
 
+## Species-at-risk
+
+`r length(sar)` species-at-risk were discovered in this dataset (see @tbl-sar).
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| label: tbl-sar
+#| tbl-cap: Species-at-risk detections
+#| code-fold: true
+
+cansar <- read_csv("./assets/CAN-SAR_database.csv") |>
+  select(species, sara_status) |>
+  distinct() |>
+  mutate(across(species, ~ toupper(.)))
+
+sar <- nsma_main |>
+  select(species_scientific_name) |>
+  distinct() |>
+  left_join(cansar, by = c("species_scientific_name" = "species")) |>
+  filter(!is.na(species_scientific_name), !is.na(sara_status)) |>
+  slice(-4) |>
+  pull(species_scientific_name)
+
+nsma_sar <- nsma_main |>
+  filter(species_scientific_name %in% sar) |>
+  inner_join(cansar |> filter(!(species == "PODICEPS AURITUS" & sara_status == "Endangered")) |> select(species, sara_status), by = c("species_scientific_name" = "species")) |>
+  select(location, latitude, longitude, recording_date_time, species_common_name, sara_status) |>
+  mutate(recording_date_time = as.POSIXct(recording_date_time, format = "%Y%m%d %H:%M:%S"))
+
+datatable(nsma_sar, 
+          options = list(
+            searching = TRUE,  
+            paging = TRUE,    
+            pageLength = 10   
+          ))
+
+```
+
+```{r}
+
+soi <- c(
+  "Bank Swallow",
+  "Barn Swallow",
+  "Common Nighthawk",
+  "Evening Grosbeak",
+  "Harris's Sparrow",
+  "Horned Grebe",
+  "Lesser Yellowlegs",
+  "Olive-sided Flycatcher",
+  "Red-necked phalarope",
+  "Rusty Blackbird",
+  "Short-billed Dowitcher",
+  "Short-eared Owl",
+  "Snowy Owl",
+  "Yellow Rail"
+)
+
+nsma_main |>
+  filter(species_common_name %in% soi) |>
+  select(location, latitude, longitude, recording_date_time, species_common_name) 
+  
+
+```
+
+
 # Discussion
 
-Stay tuned for the results!
+Indigenous-led community-based monitoring is key to protecting the land and wildlife in the North Slave region, ensuring that local knowledge, values, and priorities guide how we understand and care for the environment. By combining environmental sensors with environmental DNA sampling, this program builds a broad, long-term picture of biodiversity. Ongoing monitoring will help track how climate change and wildfires are affecting the land, providing communities with the information they need to protect both the environment and their cultural connections, and to strengthen resilience for future generations.
