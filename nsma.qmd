@@ -23,7 +23,7 @@ styles: styles.css
 github: https://github.com/biodiversitypathways/nsma
 ---
 
-![Forest near Behchoko, NWT. Credit Michelle Knaggs.](./assets/slavelake.png)
+![Forest near Behchoko, NWT.](./assets/slavelake.png)
 
 ```{r}
 #| label: load-packages and authenticate
@@ -43,7 +43,7 @@ library(plotly)
 library(DT)
 library(vegan)
 
-wt_auth(force = T)
+wt_auth()
 
 load('nsma.RData')
 #save.image('nsma.RData')
@@ -51,7 +51,7 @@ load('nsma.RData')
 
 # Abstract
 
-The North Slave Métis Alliance deployed Autonomous Recording Units (ARUs) across `r nrow(locs_summary)` locations over three years to characterize the acoustic community. This project is part of a larger community based monitoring program of the NSMA Guardianship Program that involves using game cameras, ARUs, water quality sampling and eDNA to assess biodiversity in the North Slave Region. A total of `r nrow(distinct_spp)` species were detected by ARUs, with species accumulation stabilizing as deployment coverage expanded. These results highlight the effectiveness of ARUs in detecting species and their potential to enhance species monitoring programs comprehensively. Continued long-term sampling and the inclusion of new locations reflecting the dynamic northern landscape are recommended to sustain and improve monitoring efforts.
+The North Slave Métis Alliance deployed Autonomous Recording Units (ARUs) across `r nrow(locs_summary)` locations over three years to characterize the acoustic community. This project is part of a broader community-based monitoring initiative under the NSMA Guardianship Program, which incorporates game cameras, ARUs, water quality sampling, and eDNA to assess biodiversity in the North Slave Region. A total of `r nrow(distinct_spp)` species were detected, with species accumulation beginning to stabilize as deployment coverage expanded. These results highlight the effectiveness of ARUs in detecting species and their potential to enhance species monitoring programs. Continued long-term sampling of sites already surveyed, along with the inclusion of new locations in areas that reflect the dynamic northern landscape, is recommended to sustain and improve monitoring efforts.
 
 ::: {.callout-note collapse="true" style="background-color: #f4f4f4; padding: 20px;"}
 This report is dynamically generated, meaning its results may evolve with the addition of new data or further analyses. For the most recent updates, refer to the publication date and feel free to reach out to the authors.
@@ -101,7 +101,15 @@ The report summarizes the data collected from the ARUs by the NSMA from 2022 to 
 
 # Methods
 
-Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. In addition, NSMA member’s Traditional Knowledge of the land and historical distribution of species at risk was incorporated into the study design. Several NSMA members were interviewed and asked to identify areas of interest for sampling based on the following criteria: 1) current or historical presence of the target species at risk in the North Slave region; 2) locations of importance to traditional harvesting of NSMA membership and 3)  locations where multiple species, SAR or non-SAR, are present. The Taiga Shield Ecozone encompasses a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types while also sampling areas of importance to NSMA members, enabling a comprehensive assessment of species diversity and abundance. Detailed coordinates and descriptions of the sampling locations are provided in @tbl-loc-summary. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbitt Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
+## Data collection
+
+Survey site selection was guided by the goal of capturing a representative sample of the region's diverse habitats while considering logistical feasibility. In addition, NSMA member’s Traditional Knowledge of the land and historical distribution of species-at-risk was incorporated into the study design. Several NSMA members were interviewed and asked to identify areas of interest for sampling based on the following criteria: 
+
+1. Current or historical presence of the target species at risk in the North Slave region; 
+2. Locations of importance to traditional harvesting of NSMA membership and, 
+3. Locations where multiple species, species-at-risk (SAR) or non-SAR, are present
+
+Locations were all located within the Taiga Shield Ecozone, encompassing a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types while also sampling areas of importance to NSMA members. Detailed coordinates and descriptions of the sampling locations are provided in @tbl-loc-summary. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbitt Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
 
 ```{r}
 #| warning: false
@@ -129,29 +137,29 @@ locs_summary <- nsma_locs |>
   ungroup() |>
   arrange(year) |>
   pivot_wider(names_from = year, values_from = value, values_fill = 0) |>
-  rename('Location' = location)
+  inner_join(nsma_main |> select(location, latitude, longitude) |> distinct(), by = "location") |>
+  rename('Location' = location) |>
+  relocate(c(latitude, longitude), .after = Location)
 
-nsma_locs_2022 <- nsma_locs |> filter(year == 2022)
-nsma_locs_2023 <- nsma_locs |> filter(year == 2023)
-nsma_locs_2024 <- nsma_locs |> filter(year == 2024)
+years <- 2022:2024
+colors <- c("yellow", "blue", "red")
+color_map <- setNames(colors, years)
 
-# Create leaflet map with layer groups
-leaflet() %>%
-  addTiles() %>%
-  addCircleMarkers(data = nsma_locs_2022, 
-                   color = "yellow", 
-                   group = "2022 Locations",
-                   popup = ~paste("Location:", location)) %>%
-  addCircleMarkers(data = nsma_locs_2023, 
-                   color = "blue", 
-                   group = "2023 Locations",
-                   popup = ~paste("Location:", location)) %>%
-  addCircleMarkers(data = nsma_locs_2024, 
-                   color = "red", 
-                   group = "2024 Locations",
-                   popup = ~paste("Location:", location)) %>%
+base_map <- leaflet() %>% addTiles()
+
+map <- purrr::reduce(years, function(map, yr) {
+  data <- nsma_locs %>% filter(year == yr)
+  map %>% addCircleMarkers(
+    data = data,
+    color = color_map[[as.character(yr)]],
+    group = paste0(yr, " Locations"),
+    popup = ~paste("Location:", location)
+  )
+}, .init = base_map)
+
+map %>%
   addLayersControl(
-    overlayGroups = c("2022 Locations", "2023 Locations", "2024 Locations"),
+    overlayGroups = paste0(years, " Locations"),
     options = layersControlOptions(collapsed = FALSE)
   ) %>%
   addMeasure() %>%
@@ -180,7 +188,13 @@ datatable(locs_summary,
               backgroundColor = styleEqual(c("NA"), "lightgray"))  
 ```
 
-Media were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `PREDULE-LAKE-1_20230625_053500.wav`. Recordings were also directly uploaded to WildTrax for processing and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
+## Data processing
+
+Media were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `PREDULE-LAKE-1_20230625_053500.wav`. Recordings were also directly uploaded to WildTrax for processing and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs) 
+
+::: {.callout-note collapse="true" style="background-color: #f4f4f4; padding: 20px;"}
+Advanced users can als use `wildrtrax` with `wt_get_sync(api = "organization_recording_summary", option = "data", organization = 5425)`.
+:::
 
 ![Downloading a list of recordings from WildTrax](assets/download-recs.png){#fig-download-recs}
 
@@ -212,9 +226,9 @@ verified_tags <- nsma_main |>
 kable(verified_tags)
 ```
 
-# Analysis
+## Analysis
 
-To evaluate species richness and activity patterns, we grouped the data by year and location using the `dplyr` package identifying unique species detected in tasks processed within WildTrax. This enabled the creation of species richness and activity plots for the results using `ggplot`. We used the `vegan` package in R to construct a species accumulation curve, assessing the sampling effort required to capture species richness. The analysis utilized a species-by-site matrix and employed a randomized accumulation method with 100 permutations to provide robust estimates of species richness as sampling sites increased.
+To evaluate species richness and activity patterns, we grouped the data by year and location using the `dplyr` R package identifying unique species detected in tasks processed within WildTrax. This enabled the creation of species richness and activity plots for the results using `ggplot`. We used the `vegan` package in R to construct a species accumulation curve, assessing the sampling effort required to capture species richness. The analysis utilized a species-by-site matrix and employed a randomized accumulation method with 100 permutations to provide robust estimates of species richness as sampling sites increased. To support site prioritization, we created a composite score through a weighted sum of three factors: the need for repeat surveys, the species richness observed at each site, and any existing project-specific priorities, here, any species-at-risk.
 
 # Results
 
@@ -300,7 +314,7 @@ spp_rich_location |>
 
 ## Species accumulation
 
-The species accumulation curve revealed a steady increase in species richness with additional sampling sites, reaching a richness of 88 species at the maximum total of locations surveyed (*n* = 22). Standard deviations declined consistently with increasing sample size, reflecting greater precision in richness estimates as sampling effort increased. Richness values exhibited diminishing returns beyond approximately 15 locations, indicating that additional sampling yielded fewer new species for the habitats surveyed. This plateau suggests that sampling effort was sufficient to capture most vocalizing species present in the study area.
+The species accumulation curve  seen in @fig-spp-accum revealed a steady increase in species richness with additional sampling sites, reaching a richness of 88 species at the maximum total of locations surveyed (*n* = `r nrow(locs_summary)`). Standard deviations declined consistently with increasing sample size, reflecting greater precision in richness estimates as sampling effort increased. Richness values exhibited slightly diminishing returns beyond approximately 15 locations, indicating that additional sampling yielded fewer new species for the habitats surveyed would plateau suggests that sampling effort at this time of year was nearly sufficient to capture most vocalizing species present in the study area.
 
 ```{r}
 #| warning: false
@@ -315,49 +329,48 @@ The species accumulation curve revealed a steady increase in species richness wi
 #| code-fold: true
 
 # Identify the first detection site for each species
-first_detection <- nsma_main %>%
-  group_by(species_code) %>%
-  arrange(recording_date_time) %>%
+first_detection <- nsma_main |>
+  group_by(species_code) |>
+  arrange(recording_date_time) |>
   summarise(
     FirstSite = first(location),
     FirstDate = first(recording_date_time),
     .groups = "drop"
   )
 
-# Add a column indicating whether each site was the first detection for any species
-nsma_main2 <- nsma_main %>%
-  left_join(first_detection, by = "species_code") %>%
+nsma_main2 <- nsma_main |>
+  mutate(year = year(recording_date_time)) |>
+  left_join(first_detection, by = "species_code") |>
   mutate(IsFirstDetection = location == FirstSite)
 
 # Create species-by-site matrix
-species_matrix <- nsma_main2 %>%
-  group_by(year, location, species_code) %>%
-  summarise(individual_count = max(individual_order, na.rm = TRUE), .groups = "drop") %>%
+species_matrix <- nsma_main2 |>
+  group_by(year, location, species_code) |>
+  summarise(individual_count = max(individual_order, na.rm = TRUE), .groups = "drop") |>
   pivot_wider(
     names_from = species_code,
     values_from = individual_count,
     values_fill = 0
-  ) %>%
-  select(-year, -location) %>%
+  ) |>
+  select(-year, -location) |>
   as.matrix()
 
-# Accumulation curve using vegan
+# Accumulation curve using vegan::specaccum
 spec_accum <- specaccum(species_matrix, method = "random")
 
-# Create dataframe for plotting accumulation curve
 accum_data <- data.frame(
   Sites = spec_accum$sites,
   Richness = spec_accum$richness,
   SD = spec_accum$sd
-) %>%
+) |>
   mutate(
     Lower = Richness - SD,
     Upper = Richness + SD
   )
 
 # Prepare first detection data for plotting
-first_detection_data <- first_detection %>%
-  mutate(SiteOrder = match(FirstSite, unique(nsma_main$location))) %>%
+first_detection_data <- first_detection |>
+  mutate(SiteOrder = match(FirstSite, unique(nsma_main$location))) |>
   left_join(accum_data, by = c("SiteOrder" = "Sites"))
 
 # Plot the accumulation curve with first detections
@@ -392,6 +405,8 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
 
 ## Species through the season
 
+Figures @fig-spp-activity-trait)–@fig-spp-activity-habitat show seasonal activity patterns by nesting, trait, migratory strategy, and habitat. Any ridgeplots that aren't shown are due to lack of data (i.e. only one or two species detections or guild detections) to plot the data.
+
 ```{r}
 #| warning: false
 #| echo: false
@@ -402,10 +417,13 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
 #| tbl-cap: Common bird forest species guilds. For nesting habitat; Ag = Agricultural, Be = Beach, Bo = Bog, CW = Coniferous Woodlands, ES = Early Successional, MW = Mixed Woodlands, OW = Open Woodlands, TSS = Treed/Shrubby Swamp, Ur = Urban. Species from CW, MW, OW, TSS were used for analysis.
 #| code-fold: true
 
-guilds <- read_csv("bird_guilds.csv") |>
-  select(species_common_name, habitat_nesting) |>
+guilds <- read_csv("jasper_guilds.csv") |>
+  mutate(migratory_guild = case_when(str_detect("Short-distance migrant", migratory_guild) ~ "Short-distance migrants", 
+                                     str_detect("Winter resident", migratory_guild) ~ "Winter residents",
+                                     TRUE ~ migratory_guild)) |>
+  select(species_common_name, trait, dietary_guild, habitat_guild, migratory_guild) |>
   inner_join(nsma_main |> select(species_common_name) |> distinct(), by = c("species_common_name")) |>
-  filter(!is.na(habitat_nesting))
+  filter(!is.na(habitat_guild))
 
 datatable(guilds, 
           options = list(
@@ -417,6 +435,89 @@ datatable(guilds,
               backgroundColor = styleEqual(c("NA"), "lightgray"))  
 
 ```
+
+:::{.column-margin}
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-height: 10
+#| fig-cap: Species activity
+#| label: fig-spp-activity-trait
+#| cap-location: margin
+#| code-fold: true
+
+activity |>
+  ggplot(aes(x = julian, y = trait, fill = trait)) + 
+  geom_density_ridges(scale = 4, rel_min_height = 0.005, alpha = 0.4) + 
+  scale_fill_viridis_d() +
+  scale_x_continuous(
+    name = "Month",
+    breaks = c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335),
+    labels = month.abb
+  ) +
+  theme_bw() +
+  ylab("Species")
+
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-cap: Species activity dietary
+#| label: fig-spp-activity-dietary
+#| cap-location: margin
+#| code-fold: true
+
+activity |>
+  ggplot(aes(x = julian, y = dietary_guild, fill = dietary_guild)) + 
+  geom_density_ridges(scale = 4, rel_min_height = 0.005, alpha = 0.4) + 
+  scale_fill_viridis_d() +
+  scale_x_continuous(
+    name = "Month",
+    breaks = c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335),
+    labels = month.abb
+  ) +
+  theme_bw() +
+  ylab("Species")
+
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-cap: Species activity migratory
+#| label: fig-spp-activity-migratory
+#| cap-location: margin
+#| code-fold: true
+
+activity |>
+  ggplot(aes(x = julian, y = migratory_guild, fill = migratory_guild)) + 
+  geom_density_ridges(scale = 4, rel_min_height = 0.005, alpha = 0.4) + 
+  scale_fill_viridis_d() +
+  scale_x_continuous(
+    name = "Month",
+    breaks = c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335),
+    labels = month.abb
+  ) +
+  theme_bw() +
+  ylab("Species")
+
+```
+:::
+
 
 ```{r}
 #| warning: false
@@ -430,7 +531,7 @@ datatable(guilds,
 #| cap-location: margin
 #| code-fold: true
 
-nsma_main |>
+activity <- nsma_main |>
   wt_tidy_species(remove = c("mammal", "amphibian", "abiotic", "insect", "unknown"), zerofill = F) |>
   dplyr::select(location, recording_date_time, species_common_name, species_code, individual_count) |>
   mutate(julian = lubridate::yday(recording_date_time),
@@ -444,32 +545,27 @@ nsma_main |>
   ungroup() |>
   arrange(species_code) |>
   mutate(recording_date_time = as.POSIXct(recording_date_time)) |>
-  inner_join(guilds |> select(species_common_name, habitat_nesting)) |>
-  mutate(habitat_nesting = case_when(
-    habitat_nesting == "CW" ~ "Coniferous Woodland",
-    habitat_nesting == "MW" ~ "Mixedwood",
-    habitat_nesting == "OW" ~ "Open Woodland",
-    habitat_nesting == "TSS" ~ "Tree Shrub / Swamp",
-    habitat_nesting == "Bo" ~ "Bog",
-    habitat_nesting == "Ma" ~ "Marsh",
-    habitat_nesting == "Ur" ~ "Urban",
-    habitat_nesting == "ES" ~ "Edge / Shrubs",
-    habitat_nesting == "Be" ~ "Be",
-    TRUE ~ "Undefined"
-  )) |>
-  rename("Nesting habitat" = habitat_nesting) |>
+  inner_join(guilds) |>
+  rename("Nesting habitat" = habitat_guild) 
+
+activity |>
   ggplot(aes(x = julian, y = species_common_name, fill = `Nesting habitat`)) + 
   geom_density_ridges(scale = 4, rel_min_height = 0.005, alpha = 0.4) + 
   scale_fill_viridis_d() +
+  scale_x_continuous(
+    name = "Month",
+    breaks = c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335),
+    labels = month.abb
+  ) +
   theme_bw() +
-  xlab("Day of Year") + 
   ylab("Species")
 
 ```
 
+
 ## Species-at-risk
 
-`r length(sar)` species-at-risk were discovered in this dataset (see @tbl-sar).
+`r length(sar)` species-at-risk were discovered in this data set. @tbl-sar outlines the species and which locations they were detected at. Species-at-risk status was pulled from the [CANSAR database](https://www.nature.com/articles/s41597-022-01381-8). 
 
 ```{r}
 #| warning: false
@@ -486,19 +582,25 @@ cansar <- read_csv("./assets/CAN-SAR_database.csv") |>
   distinct() |>
   mutate(across(species, ~ toupper(.)))
 
+cansar_lower <- cansar |>
+  mutate(species = str_replace_all(str_to_lower(species), "^[^ ]+", ~ str_to_title(.x)))
+
 sar <- nsma_main |>
   select(species_scientific_name) |>
   distinct() |>
   left_join(cansar, by = c("species_scientific_name" = "species")) |>
   filter(!is.na(species_scientific_name), !is.na(sara_status)) |>
   slice(-4) |>
+  mutate(species_scientific_name = str_replace_all(str_to_lower(species_scientific_name), "^[^ ]+", ~ str_to_title(.x))) |>
   pull(species_scientific_name)
 
 nsma_sar <- nsma_main |>
+  mutate(species_scientific_name = str_replace_all(str_to_lower(species_scientific_name), "^[^ ]+", ~ str_to_title(.x))) |>
   filter(species_scientific_name %in% sar) |>
-  inner_join(cansar |> filter(!(species == "PODICEPS AURITUS" & sara_status == "Endangered")) |> select(species, sara_status), by = c("species_scientific_name" = "species")) |>
+  inner_join(cansar_lower |> select(species, sara_status), by = c("species_scientific_name" = "species")) |>
+  filter(!(species_common_name == "Horned Grebe" & sara_status == "Endangered")) |>
   select(location, latitude, longitude, recording_date_time, species_common_name, sara_status) |>
-  mutate(recording_date_time = as.POSIXct(recording_date_time, format = "%Y%m%d %H:%M:%S"))
+  mutate(recording_date_time = as.character(ymd_hms(recording_date_time)))
 
 datatable(nsma_sar, 
           options = list(
@@ -510,6 +612,13 @@ datatable(nsma_sar,
 ```
 
 ```{r}
+#| warning: false
+#| echo: true
+#| eval: true
+#| message: false
+#| include: true
+#| collapse: true
+#| code-fold: true
 
 soi <- c(
   "Bank Swallow",
@@ -535,7 +644,57 @@ nsma_main |>
 
 ```
 
-
 # Discussion
 
-Indigenous-led community-based monitoring is key to protecting the land and wildlife in the North Slave region, ensuring that local knowledge, values, and priorities guide how we understand and care for the environment. By combining environmental sensors with environmental DNA sampling, this program builds a broad, long-term picture of biodiversity. Ongoing monitoring will help track how climate change and wildfires are affecting the land, providing communities with the information they need to protect both the environment and their cultural connections, and to strengthen resilience for future generations.
+To ensure the integrity and consistency of a long-term monitoring program, it is important to maintain a consistent survey schedule and timing each year when deploying ARUs. This consistency helps reduce variation caused by seasonal differences in species presence or activity. Additionally, the importance of regular maintenance and calibration of ARU equipment, particularly microphones, which degrade over time and can affect data quality if not properly managed after prolonged field use (see @arus-mics). Surveying locations with a history of monitoring over multiple years is key to tracking changes in species composition and detecting long-term trends. By including sites with both high and low species diversity, we can better understand how habitats and species ranges are shifting over time. Sites where species-at-risk are present are also prioritized to support conservation efforts. Together, these considerations inform the prioritized list of key sampling sites across the NSMA region, as summarized in Table @tbl-prioritization.
+
+```{r}
+#| warning: false
+#| echo: true
+#| eval: true
+#| message: false
+#| include: true
+#| collapse: true
+#| code-fold: true
+#| label: tbl-prioritization
+#| tbl-cap: Prioritization
+
+repeat_priority <- locs_summary |>
+  rowwise() |>
+  mutate(priority = sum(c_across(`2022`:`2024`), na.rm = TRUE)) |>
+  ungroup() |>
+  arrange(-priority)
+
+rich_priority <- spp_rich_location |> group_by(location) |> summarise(priority = mean(species_count)) |> arrange(-priority)
+
+soi_priority <- nsma_main |>
+  filter(species_common_name %in% soi) |>
+  select(location, latitude, longitude, recording_date_time, species_common_name)  |>
+  group_by(location) |>
+  summarise(priority = n_distinct(species_common_name))
+
+prioritization_matrix <- repeat_priority |>
+  rename(location = Location) |>
+  left_join(rich_priority, by = "location", suffix = c("_repeat", "_rich")) |>
+  left_join(soi_priority, by = "location", suffix = c("", "_soi")) |>
+  mutate(
+    priority_repeat = ifelse(is.na(priority_repeat), 0, priority_repeat),
+    priority_rich = ifelse(is.na(priority_rich), 0, priority_rich),
+    priority = ifelse(is.na(priority), 0, priority)
+  ) |>
+  mutate(combined_priority = priority_repeat * 2 + priority_rich + priority) |> # Created a weighted-sum
+  select(location, combined_priority) |>
+  arrange(-combined_priority)
+
+datatable(prioritization_matrix, 
+          options = list(
+            searching = TRUE,  
+            paging = TRUE,    
+            pageLength = 10   
+          ))
+```
+
+As this monitoring is led by Indigenous communities, it is guided by local knowledge, values, and priorities to protect the land and wildlife. By combining new technologies and sampling technique with traditional knowledge, the program contributes to building a comprehensive, long-term understanding of biodiversity in the region. Ongoing monitoring will help track the impacts of climate change. This information will help to support communities in protecting their environment and cultural connections while strengthening resilience for the future.
+
+
+
