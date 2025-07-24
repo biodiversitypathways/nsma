@@ -43,7 +43,7 @@ library(plotly)
 library(DT)
 library(vegan)
 
-wt_auth()
+wt_auth(force = T)
 
 load('nsma.RData')
 #save.image('nsma.RData')
