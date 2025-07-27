@@ -43,7 +43,7 @@ library(plotly)
 library(DT)
 library(vegan)
 
-wt_auth()
+#wt_auth()
 
 load('nsma.RData')
 #save.image('nsma.RData')
@@ -232,6 +232,21 @@ To evaluate species richness and activity patterns, we grouped the data by year 
 # Results
 
 ```{r}
+#| eval: false
+#| include: false
+#| code-fold: false
+
+# No authorization access to NSMA Organization, species
+all_recs <- wt_get_recordings('NSMA') |>
+  as_tibble() |>
+  unnest(everything()) |>
+  mutate(year = year(ymd_hms(recording_date_time)),
+         julian = yday(recording_date_time))
+
+wt_species <- wt_get_species()
+```
+
+```{r}
 #| warning: false
 #| message: false
 #| echo: false
@@ -242,12 +257,6 @@ To evaluate species richness and activity patterns, we grouped the data by year 
 #| fig-align: center
 #| fig-cap: All recordings collected from the ARU monitoring program
 #| label: fig-all-recs
-
-all_recs <- wt_get_recordings('NSMA') |>
-  as_tibble() |>
-  unnest(everything()) |>
-  mutate(year = year(ymd_hms(recording_date_time)),
-         julian = yday(recording_date_time))
 
 max_julian <- max(all_recs$julian, na.rm = TRUE)
 
@@ -277,8 +286,8 @@ ggplot(all_recs, aes(x = julian, y = location)) +
 #| code-fold: true
 
 spp_rich_location <- nsma_main |>
-  as_tibble() |>
-  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F) |>
+  inner_join(wt_species, by = "species_code") |>
+  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN")) |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(location, year, species_code) |>
   distinct() |>
@@ -287,8 +296,8 @@ spp_rich_location <- nsma_main |>
   ungroup()
 
 distinct_spp <- nsma_main |>
-  as_tibble() |>
-  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F) |>
+  inner_join(wt_species, by = "species_code") |>
+  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN")) |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(species_code) |>
   distinct() |>
@@ -363,25 +372,19 @@ species_matrix <- nsma_main2 |>
   select(-year, -location) |>
   as.matrix()
 
-# Accumulation curve using vegan::specaccum
 spec_accum <- specaccum(species_matrix, method = "random")
 
 accum_data <- data.frame(
   Sites = spec_accum$sites,
   Richness = spec_accum$richness,
-  SD = spec_accum$sd
-) |>
-  mutate(
-    Lower = Richness - SD,
-    Upper = Richness + SD
-  )
+  SD = spec_accum$sd) |>
+  mutate(Lower = Richness - SD, 
+         Upper = Richness + SD)
 
-# Prepare first detection data for plotting
 first_detection_data <- first_detection |>
   mutate(SiteOrder = match(FirstSite, unique(nsma_main$location))) |>
   left_join(accum_data, by = c("SiteOrder" = "Sites"))
 
-# Plot the accumulation curve with first detections
 ggplot(accum_data, aes(x = Sites, y = Richness)) +
   geom_line(color = "blue", size = 1) +
   geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = "lightblue", alpha = 0.4) +
@@ -390,24 +393,16 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
     aes(x = SiteOrder, y = Richness),
     size = 3
   ) +
-  geom_text(
-    data = first_detection_data,
-    aes(x = SiteOrder, y = Richness, label = species_code),
-    nudge_y = 2, # Adjust to move text slightly above the points
-    size = 3
-  ) +
   labs(
-    title = "Species Accumulation Curve with First Detection Sites",
-    x = "Number of Sites",
-    y = "Cumulative Number of Species"
+    title = "Species accumulation curve",
+    x = "Number of Locations",
+    y = "Cumulative number of species"
   ) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
     axis.title = element_text(size = 14)
   )
-
-
 
 ```
 
@@ -541,8 +536,9 @@ activity |>
 #| code-fold: true
 
 activity <- nsma_main |>
-  wt_tidy_species(remove = c("mammal", "amphibian", "abiotic", "insect", "unknown"), zerofill = F) |>
-  dplyr::select(location, recording_date_time, species_common_name, species_code, individual_count) |>
+  inner_join(wt_species, by = "species_code") |>
+  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN")) |>
+  dplyr::select(location, recording_date_time, species_common_name.x, species_code, individual_count) |>
   mutate(julian = lubridate::yday(recording_date_time),
          month = month(recording_date_time),
          year = factor(year(recording_date_time))) |>
@@ -554,8 +550,9 @@ activity <- nsma_main |>
   ungroup() |>
   arrange(species_code) |>
   mutate(recording_date_time = as.POSIXct(recording_date_time)) |>
-  inner_join(guilds) |>
-  rename("Nesting habitat" = habitat_guild) 
+  inner_join(guilds, by = c("species_common_name.x" = "species_common_name")) |>
+  rename("Nesting habitat" = habitat_guild) |>
+  rename("species_common_name" = species_common_name.x)
 
 activity |>
   ggplot(aes(x = julian, y = species_common_name, fill = `Nesting habitat`)) + 
