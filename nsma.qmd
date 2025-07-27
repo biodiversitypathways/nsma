@@ -169,7 +169,7 @@ map |>
 
 ```{r}
 #| warning: false
-#| echo: true
+#| echo: false
 #| eval: true
 #| message: false
 #| include: true
@@ -408,7 +408,7 @@ ggplot(accum_data, aes(x = Sites, y = Richness)) +
 
 ## Species through the season
 
-Figures @fig-spp-activity-trait–@fig-spp-activity-habitat show seasonal activity patterns by nesting, trait, migratory strategy, and habitat. Any ridgeplots that aren't shown are due to lack of data (i.e. only one or two species detections or guild detections) to plot the data.
+Figures @fig-spp-activity-trait – @fig-spp-activity show seasonal activity patterns by nesting, trait, migratory strategy, and habitat, respectively. Any ridgeplots that aren't shown are due to lack of data (i.e. only one or two species or guild detections) to plot the data.
 
 ```{r}
 #| warning: false

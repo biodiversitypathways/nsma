@@ -201,7 +201,7 @@ div.csl-indent {
 </div>
 <section id="abstract" class="level1">
 <h1>Abstract</h1>
-<p>The North Slave Métis Alliance deployed Autonomous Recording Units (ARUs) across 16 locations over three years to characterize the acoustic community. This project is part of a broader community-based monitoring initiative under the NSMA Guardianship Program, which incorporates game cameras, ARUs, water quality sampling, and eDNA to assess biodiversity in the North Slave Region. A total of 84 species were detected, 4 species-at-risk, with species accumulation beginning to stabilize as more locations were surveyed. These results highlight the effectiveness of ARUs in detecting species and their potential to enhance the overall North Slave species monitoring programs. Continued long-term sampling of sites already surveyed, along with the inclusion of new locations in areas that reflect the dynamic northern landscape, is recommended to sustain and improve monitoring efforts.</p>
+<p>The North Slave Métis Alliance deployed Autonomous Recording Units (ARUs) across 16 locations over three years to characterize the acoustic community. This project is part of a broader community-based monitoring initiative under the NSMA Guardianship Program, which incorporates game cameras, ARUs, water quality sampling, and eDNA to assess biodiversity in the North Slave Region. A total of 73 species were detected, 4 species-at-risk, with species accumulation beginning to stabilize as more locations were surveyed. These results highlight the effectiveness of ARUs in detecting species and their potential to enhance the overall North Slave species monitoring programs. Continued long-term sampling of sites already surveyed, along with the inclusion of new locations in areas that reflect the dynamic northern landscape, is recommended to sustain and improve monitoring efforts.</p>
 <div class="callout callout-style-default callout-note callout-titled" style="background-color: #f4f4f4; padding: 20px;">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -324,14 +324,6 @@ Figure&nbsp;1: Locations from North Slave Métis Alliance ARU Monitoring Program
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(locs_summary, </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">searching =</span> <span class="cn">TRUE</span>,  </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">paging =</span> <span class="cn">TRUE</span>,    </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">pageLength =</span> <span class="dv">10</span>   </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>          )) <span class="sc">|&gt;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatStyle</span>(<span class="at">columns =</span> <span class="fu">colnames</span>(locs_summary), </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">backgroundColor =</span> <span class="fu">styleEqual</span>(<span class="fu">c</span>(<span class="st">"NA"</span>), <span class="st">"lightgray"</span>))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div id="tbl-loc-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-loc-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -451,7 +443,7 @@ Figure&nbsp;4: All recordings collected from the ARU monitoring program
 <p>A total of 24677 recordings were collected across all three years (see <a href="#fig-all-recs" class="quarto-xref">Figure&nbsp;4</a>). Species richness increased at most locations sampled in 2024 compared to 2023, likely reflecting differences in sampling effort (see <a href="#fig-spp-rich-locs" class="quarto-xref">Figure&nbsp;5</a>). For example, BOUNDARY-CREEK-1 recorded an increase from 16 species in 2023 to 26 species in 2024, while STAGG-RIVER-1 increased from 23 to 25 species. Similarly, TIBBIT-LAKE-1 and WHATI saw notable increases, with species counts rising from 14 to 19 and 7 to 11, respectively. Locations sampled exclusively in 2024, such as MOSQUITO-LAKE-2 and PAULINE-LAKE-3, recorded species counts of 3 and 7, respectively, adding to the overall species inventory. In contrast, smaller changes were observed at sites like CAMERON-RIVER-1, where species richness increased from 8 to 10.</p>
 <div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-rich-locs-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -468,7 +460,7 @@ Figure&nbsp;5: Species richness at forest monitoring locations across years
 <p>The species accumulation curve seen in <a href="#fig-spp-accum" class="quarto-xref">Figure&nbsp;6</a> revealed a steady increase in species richness with additional sampling sites, reaching a richness of 88 species at the maximum total of locations surveyed (<em>n</em> = 16). Standard deviations declined consistently with increasing sample size, reflecting greater precision in richness estimates as sampling effort increased. Richness values exhibited slightly diminishing returns beyond approximately 15 locations, indicating that additional sampling yielded fewer new species for the habitats surveyed would plateau suggests that sampling effort at this time of year was nearly sufficient to capture most vocalizing species present in the study area.</p>
 <div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-accum" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-accum" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-spp-accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-accum-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -483,7 +475,7 @@ Figure&nbsp;6: Species accumulation curve
 </section>
 <section id="species-through-the-season" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="species-through-the-season">Species through the season</h2>
-<p>Figures <a href="#fig-spp-activity-trait" class="quarto-xref">Figure&nbsp;7</a>–<strong>?@fig-spp-activity-habitat</strong> show seasonal activity patterns by nesting, trait, migratory strategy, and habitat. Any ridgeplots that aren’t shown are due to lack of data (i.e.&nbsp;only one or two species detections or guild detections) to plot the data.</p>
+<p>Figures <a href="#fig-spp-activity-trait" class="quarto-xref">Figure&nbsp;7</a> – <a href="#fig-spp-activity" class="quarto-xref">Figure&nbsp;10</a> show seasonal activity patterns by nesting, trait, migratory strategy, and habitat, respectively. Any ridgeplots that aren’t shown are due to lack of data (i.e.&nbsp;only one or two species or guild detections) to plot the data.</p>
 <div class="cell">
 <div id="tbl-bird-guilds" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -503,7 +495,7 @@ Table&nbsp;3: Common bird forest species guilds. For nesting habitat; Ag = Agric
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="cell" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display">
-<div id="fig-spp-activity-trait" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-activity-trait" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-activity-trait-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-activity-trait-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -517,7 +509,7 @@ Figure&nbsp;7: Species activity
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display">
-<div id="fig-spp-activity-dietary" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-activity-dietary" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-activity-dietary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-activity-dietary-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -531,7 +523,7 @@ Figure&nbsp;8: Species activity dietary
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display">
-<div id="fig-spp-activity-migratory" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-activity-migratory" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-activity-migratory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-activity-migratory-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -545,7 +537,7 @@ Figure&nbsp;9: Species activity migratory
 </div>
 </div></div><div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="nsma_files/figure-html/fig-spp-activity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -579,46 +571,46 @@ Table&nbsp;4: Species-at-risk detections
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>soi <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bank Swallow"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Barn Swallow"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Common Nighthawk"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Evening Grosbeak"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Harris's Sparrow"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Horned Grebe"</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Lesser Yellowlegs"</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Olive-sided Flycatcher"</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Red-necked phalarope"</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Rusty Blackbird"</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Short-billed Dowitcher"</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Short-eared Owl"</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Snowy Owl"</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Yellow Rail"</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>nsma_main <span class="sc">|&gt;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species_common_name <span class="sc">%in%</span> soi) <span class="sc">|&gt;</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, latitude, longitude, recording_date_time, species_common_name) </span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 17 × 5</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="do">##    location         latitude longitude recording_date_time species_common_name  </span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;                </span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 STAGG-RIVER-1        62.7     -116. 2023-05-24 05:29:00 Lesser Yellowlegs    </span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 TIBBITT-LAKE-1       62.5     -113. 2023-05-17 21:56:02 Lesser Yellowlegs    </span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 TIBBITT-LAKE-1       62.5     -113. 2023-05-18 03:16:02 Lesser Yellowlegs    </span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 BAKER-CREEK          62.5     -114. 2024-06-21 22:40:00 Common Nighthawk     </span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 BOUNDARY-CREEK-1     62.5     -115. 2024-06-09 04:31:00 Olive-sided Flycatch…</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 BOUNDARY-CREEK-1     62.5     -115. 2024-07-05 04:33:00 Lesser Yellowlegs    </span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 BOUNDARY-CREEK-1     62.5     -115. 2024-07-05 04:33:00 Barn Swallow         </span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 CAMERON-RIVER-1      62.5     -114. 2024-06-19 22:36:00 Common Nighthawk     </span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 FRANK-CHANNEL        62.8     -116. 2024-07-02 22:44:00 Common Nighthawk     </span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 FRANK-CHANNEL        62.8     -116. 2024-07-02 22:44:00 Common Nighthawk     </span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="do">## 11 PRELUDE-LAKE-1       62.6     -114. 2024-07-03 22:31:00 Horned Grebe         </span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="do">## 12 STAGG-RIVER-1        62.7     -116. 2024-06-12 22:43:00 Common Nighthawk     </span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="do">## 13 STAGG-RIVER-1        62.7     -116. 2024-06-18 22:48:00 Common Nighthawk     </span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="do">## 14 STAGG-RIVER-1        62.7     -116. 2024-06-18 22:48:00 Common Nighthawk     </span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="do">## 15 TIBBITT-LAKE-1       62.5     -113. 2024-06-22 22:37:00 Common Nighthawk     </span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="do">## 16 TIBBITT-LAKE-1       62.5     -113. 2024-06-22 22:37:00 Common Nighthawk     </span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="do">## 17 TIBBITT-LAKE-1       62.5     -113. 2024-06-22 22:37:00 Common Nighthawk</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>soi <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bank Swallow"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Barn Swallow"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Common Nighthawk"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Evening Grosbeak"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Harris's Sparrow"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Horned Grebe"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Lesser Yellowlegs"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Olive-sided Flycatcher"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Red-necked phalarope"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Rusty Blackbird"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Short-billed Dowitcher"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Short-eared Owl"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Snowy Owl"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Yellow Rail"</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>nsma_main <span class="sc">|&gt;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species_common_name <span class="sc">%in%</span> soi) <span class="sc">|&gt;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, latitude, longitude, recording_date_time, species_common_name) </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 17 × 5</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="do">##    location         latitude longitude recording_date_time species_common_name  </span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;                </span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 STAGG-RIVER-1        62.7     -116. 2023-05-24 05:29:00 Lesser Yellowlegs    </span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 TIBBITT-LAKE-1       62.5     -113. 2023-05-17 21:56:02 Lesser Yellowlegs    </span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 TIBBITT-LAKE-1       62.5     -113. 2023-05-18 03:16:02 Lesser Yellowlegs    </span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 BAKER-CREEK          62.5     -114. 2024-06-21 22:40:00 Common Nighthawk     </span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 BOUNDARY-CREEK-1     62.5     -115. 2024-06-09 04:31:00 Olive-sided Flycatch…</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 BOUNDARY-CREEK-1     62.5     -115. 2024-07-05 04:33:00 Lesser Yellowlegs    </span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 BOUNDARY-CREEK-1     62.5     -115. 2024-07-05 04:33:00 Barn Swallow         </span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 CAMERON-RIVER-1      62.5     -114. 2024-06-19 22:36:00 Common Nighthawk     </span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 FRANK-CHANNEL        62.8     -116. 2024-07-02 22:44:00 Common Nighthawk     </span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 FRANK-CHANNEL        62.8     -116. 2024-07-02 22:44:00 Common Nighthawk     </span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="do">## 11 PRELUDE-LAKE-1       62.6     -114. 2024-07-03 22:31:00 Horned Grebe         </span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="do">## 12 STAGG-RIVER-1        62.7     -116. 2024-06-12 22:43:00 Common Nighthawk     </span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="do">## 13 STAGG-RIVER-1        62.7     -116. 2024-06-18 22:48:00 Common Nighthawk     </span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="do">## 14 STAGG-RIVER-1        62.7     -116. 2024-06-18 22:48:00 Common Nighthawk     </span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="do">## 15 TIBBITT-LAKE-1       62.5     -113. 2024-06-22 22:37:00 Common Nighthawk     </span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="do">## 16 TIBBITT-LAKE-1       62.5     -113. 2024-06-22 22:37:00 Common Nighthawk     </span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="do">## 17 TIBBITT-LAKE-1       62.5     -113. 2024-06-22 22:37:00 Common Nighthawk</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -629,39 +621,39 @@ Table&nbsp;4: Species-at-risk detections
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>repeat_priority <span class="ot">&lt;-</span> locs_summary <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">priority =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>(<span class="st">`</span><span class="at">2022</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2024</span><span class="st">`</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>priority)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>rich_priority <span class="ot">&lt;-</span> spp_rich_location <span class="sc">|&gt;</span> <span class="fu">group_by</span>(location) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">priority =</span> <span class="fu">mean</span>(species_count)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>priority)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>soi_priority <span class="ot">&lt;-</span> nsma_main <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species_common_name <span class="sc">%in%</span> soi) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, latitude, longitude, recording_date_time, species_common_name)  <span class="sc">|&gt;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(location) <span class="sc">|&gt;</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">priority =</span> <span class="fu">n_distinct</span>(species_common_name))</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>prioritization_matrix <span class="ot">&lt;-</span> repeat_priority <span class="sc">|&gt;</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">location =</span> Location) <span class="sc">|&gt;</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(rich_priority, <span class="at">by =</span> <span class="st">"location"</span>, <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">"_repeat"</span>, <span class="st">"_rich"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(soi_priority, <span class="at">by =</span> <span class="st">"location"</span>, <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"_soi"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">priority_repeat =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(priority_repeat), <span class="dv">0</span>, priority_repeat),</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">priority_rich =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(priority_rich), <span class="dv">0</span>, priority_rich),</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">priority =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(priority), <span class="dv">0</span>, priority)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">combined_priority =</span> priority_repeat <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> priority_rich <span class="sc">+</span> priority) <span class="sc">|&gt;</span> <span class="co"># Created a weighted-sum</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, combined_priority) <span class="sc">|&gt;</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>combined_priority)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(prioritization_matrix, </span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">searching =</span> <span class="cn">TRUE</span>,  </span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">paging =</span> <span class="cn">TRUE</span>,    </span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>            <span class="at">pageLength =</span> <span class="dv">10</span>   </span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>          ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>repeat_priority <span class="ot">&lt;-</span> locs_summary <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">priority =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>(<span class="st">`</span><span class="at">2022</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2024</span><span class="st">`</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>priority)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>rich_priority <span class="ot">&lt;-</span> spp_rich_location <span class="sc">|&gt;</span> <span class="fu">group_by</span>(location) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">priority =</span> <span class="fu">mean</span>(species_count)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>priority)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>soi_priority <span class="ot">&lt;-</span> nsma_main <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species_common_name <span class="sc">%in%</span> soi) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, latitude, longitude, recording_date_time, species_common_name)  <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(location) <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">priority =</span> <span class="fu">n_distinct</span>(species_common_name))</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>prioritization_matrix <span class="ot">&lt;-</span> repeat_priority <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">location =</span> Location) <span class="sc">|&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(rich_priority, <span class="at">by =</span> <span class="st">"location"</span>, <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">"_repeat"</span>, <span class="st">"_rich"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(soi_priority, <span class="at">by =</span> <span class="st">"location"</span>, <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"_soi"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">priority_repeat =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(priority_repeat), <span class="dv">0</span>, priority_repeat),</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">priority_rich =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(priority_rich), <span class="dv">0</span>, priority_rich),</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">priority =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(priority), <span class="dv">0</span>, priority)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">combined_priority =</span> priority_repeat <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> priority_rich <span class="sc">+</span> priority) <span class="sc">|&gt;</span> <span class="co"># Created a weighted-sum</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, combined_priority) <span class="sc">|&gt;</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>combined_priority)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(prioritization_matrix, </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">searching =</span> <span class="cn">TRUE</span>,  </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">paging =</span> <span class="cn">TRUE</span>,    </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>            <span class="at">pageLength =</span> <span class="dv">10</span>   </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>          ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-prioritization" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -671,7 +663,7 @@ Table&nbsp;5: Prioritization
 <div aria-describedby="tbl-prioritization-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="datatables html-widget html-fill-item" id="htmlwidget-a758ea77731733c75345" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-a758ea77731733c75345">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],["BAKER-CREEK","STAGG-RIVER-1","BOUNDARY-CREEK-1","TIBBITT-LAKE-1","YELLOWKNIFE-RIVER-1","YELLOWKNIFE-RIVER-2","FRANK-CHANNEL","PRELUDE-LAKE-1","OFR-2","PRELUDE-LAKE-2","CAMERON-RIVER-1","WHATI","PAULINE-LAKE-3","OLD-FORT-RAE_1","MOSQUITO-CREEK-2","MOSQUITO-CREEK-1"],[33,32,30.5,25.5,25,25,22.5,22,19,19,15,15,12,11,7,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>location<\/th>\n      <th>combined_priority<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":true,"paging":true,"pageLength":10,"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"location","targets":1},{"name":"combined_priority","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-a758ea77731733c75345">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],["BAKER-CREEK","STAGG-RIVER-1","BOUNDARY-CREEK-1","YELLOWKNIFE-RIVER-2","TIBBITT-LAKE-1","YELLOWKNIFE-RIVER-1","FRANK-CHANNEL","PRELUDE-LAKE-1","OFR-2","CAMERON-RIVER-1","PRELUDE-LAKE-2","WHATI","OLD-FORT-RAE_1","PAULINE-LAKE-3","MOSQUITO-CREEK-2","MOSQUITO-CREEK-1"],[31,29.5,28,24,22.5,22,20.5,19,16,15,15,13.5,9,9,6,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>location<\/th>\n      <th>combined_priority<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":true,"paging":true,"pageLength":10,"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"location","targets":1},{"name":"combined_priority","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </figure>
