@@ -287,7 +287,7 @@ ggplot(all_recs, aes(x = julian, y = location)) +
 
 spp_rich_location <- nsma_main |>
   inner_join(wt_species, by = "species_code") |>
-  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN")) |>
+  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN"), !grepl('^UN',species_code)) |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(location, year, species_code) |>
   distinct() |>
@@ -297,7 +297,7 @@ spp_rich_location <- nsma_main |>
 
 distinct_spp <- nsma_main |>
   inner_join(wt_species, by = "species_code") |>
-  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN")) |>
+  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN"), !grepl('^UN',species_code)) |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(species_code) |>
   distinct() |>
@@ -537,7 +537,7 @@ activity |>
 
 activity <- nsma_main |>
   inner_join(wt_species, by = "species_code") |>
-  filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN")) |>
+    filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN"), !grepl('^UN',species_code)) |>
   dplyr::select(location, recording_date_time, species_common_name.x, species_code, individual_count) |>
   mutate(julian = lubridate::yday(recording_date_time),
          month = month(recording_date_time),
