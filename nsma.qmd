@@ -304,7 +304,7 @@ distinct_spp <- nsma_main |>
   arrange(species_code)
 ```
 
-A total of `r nrow(all_recs)` recordings were collected across all three years (see @fig-all-recs). Species richness increased at most locations sampled in 2024 compared to 2023, likely reflecting differences in sampling effort (see @fig-spp-rich-locs). For example, BOUNDARY-CREEK-1 recorded an increase from 16 species in 2023 to 26 species in 2024, while STAGG-RIVER-1 increased from 23 to 25 species. Similarly, TIBBIT-LAKE-1 and WHATI saw notable increases, with species counts rising from 14 to 19 and 7 to 11, respectively. Locations sampled exclusively in 2024, such as MOSQUITO-LAKE-2 and PAULINE-LAKE-3, recorded species counts of 3 and 7, respectively, adding to the overall species inventory. In contrast, smaller changes were observed at sites like CAMERON-RIVER-1, where species richness increased from 8 to 10.
+A total of `r nrow(all_recs)` recordings were collected across all three years (see @fig-all-recs). Species richness increased at most locations sampled in 2024 compared to 2023, likely reflecting differences in sampling effort (see @fig-spp-rich-locs). For example, BOUNDARY-CREEK-1 recorded an increase from 16 species in 2023 to 26 species in 2024, while STAGG-RIVER-1 increased from 23 to 25 species. Similarly, TIBBIT-LAKE-1 and WHATI saw notable increases, with species counts rising from 14 to 19 and 7 to 11, respectively. Locations sampled exclusively in 2024, such as MOSQUITO-CREEK-2 and PAULINE-LAKE-3, recorded species counts of 3 and 7, respectively, adding to the overall species inventory. In contrast, smaller changes were observed at sites like CAMERON-RIVER-1, where species richness increased from 8 to 10.
 
 ```{r}
 #| warning: false
