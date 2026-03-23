@@ -43,7 +43,7 @@ library(plotly)
 library(DT)
 library(vegan)
 
-#wt_auth()
+wt_auth()
 
 load('nsma.RData')
 #save.image('nsma.RData')
@@ -66,7 +66,7 @@ This report is dynamically generated, meaning its results may evolve with the ad
 #| code-fold: true
 
 # Download data from WildTrax
-nsma_projects <- wildrtrax::wt_get_download_summary(sensor = 'ARU') |>
+nsma_projects <- wildrtrax::wt_get_projects(sensor = 'ARU') |>
   filter(grepl('^North Slave', project)) |>
   select(project_id) |>
   pull()
@@ -77,7 +77,6 @@ nsma_main <-
     .f = ~ wildrtrax::wt_download_report(
       project_id = .x,
       sensor_id = "ARU",
-      weather_cols = T,
       reports = "main"
     )
   )
@@ -142,8 +141,8 @@ locs_summary <- nsma_locs |>
   rename('Location' = location) |>
   relocate(c(latitude, longitude), .after = Location)
 
-years <- 2022:2024
-colors <- c("yellow", "blue", "red")
+years <- 2022:2025
+colors <- c("yellow", "blue", "red", "green")
 color_map <- setNames(colors, years)
 
 base_map <- leaflet() %>% addTiles()
@@ -237,7 +236,7 @@ To evaluate species richness and activity patterns, we grouped the data by year 
 #| code-fold: false
 
 # No authorization access to NSMA Organization, species
-all_recs <- wt_get_recordings('NSMA') |>
+all_recs <- wt_get_sync("organization_recordings", organization = 5425) |>
   as_tibble() |>
   unnest(everything()) |>
   mutate(year = year(ymd_hms(recording_date_time)),
@@ -538,6 +537,7 @@ activity |>
 activity <- nsma_main |>
   inner_join(wt_species, by = "species_code") |>
     filter(!species_class %in% c("MAMMALIA","AMPHIBIA","ABIOTIC","UNKNOWN"), !grepl('^UN',species_code)) |>
+  rename(individual_count = abundance) |>
   dplyr::select(location, recording_date_time, species_common_name.x, species_code, individual_count) |>
   mutate(julian = lubridate::yday(recording_date_time),
          month = month(recording_date_time),
@@ -668,7 +668,7 @@ To ensure the integrity and consistency of a long-term monitoring program, it is
 
 repeat_priority <- locs_summary |>
   rowwise() |>
-  mutate(priority = sum(c_across(`2022`:`2024`), na.rm = TRUE)) |>
+  mutate(priority = sum(c_across(`2022`:`2025`), na.rm = TRUE)) |>
   ungroup() |>
   arrange(-priority)
 
@@ -689,7 +689,7 @@ prioritization_matrix <- repeat_priority |>
     priority_rich = ifelse(is.na(priority_rich), 0, priority_rich),
     priority = ifelse(is.na(priority), 0, priority)
   ) |>
-  mutate(combined_priority = priority_repeat * 2 + priority_rich + priority) |> # Created a weighted-sum
+  mutate(combined_priority = round((priority_repeat * 2 + priority_rich + priority),2)) |> # Created a weighted-sum
   select(location, combined_priority) |>
   arrange(-combined_priority)
 
