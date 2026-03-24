@@ -43,7 +43,7 @@ library(plotly)
 library(DT)
 library(vegan)
 
-wt_auth()
+#wt_auth()
 
 load('nsma.RData')
 #save.image('nsma.RData')
@@ -237,9 +237,7 @@ To evaluate species richness and activity patterns, we grouped the data by year 
 
 # No authorization access to NSMA Organization, species
 all_recs <- wt_get_sync("organization_recordings", organization = 5425) |>
-  as_tibble() |>
-  unnest(everything()) |>
-  mutate(year = year(ymd_hms(recording_date_time)),
+  mutate(year = year(recording_date_time),
          julian = yday(recording_date_time))
 
 wt_species <- wt_get_species()
@@ -252,7 +250,7 @@ wt_species <- wt_get_species()
 #| eval: true
 #| include: true
 #| code-fold: true
-#| fig-width: 8
+#| fig-height: 8
 #| fig-align: center
 #| fig-cap: All recordings collected from the ARU monitoring program
 #| label: fig-all-recs
