@@ -52,7 +52,7 @@ library(plotly)
 library(DT)
 library(vegan)
 
-wt_auth()
+#wt_auth()
 
 load('nsma.RData')
 #save.image('nsma.RData')
@@ -69,10 +69,10 @@ This report is dynamically generated, meaning its results may evolve with the ad
 ```{r Data download}
 #| warning: false
 #| message: false
-#| echo: true
+#| echo: false
 #| eval: false
 #| include: true
-#| code-fold: true
+#| code-fold: false
 
 # Download data from WildTrax
 nsma_projects <- wildrtrax::wt_get_projects(sensor = 'ARU') |>
@@ -101,7 +101,7 @@ Human activities have been identified as key pressures and contributors to the g
 
 In 2022, the North Slave Métis Alliance initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of the vocalizing wildlife. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to metrics that can be used to study species trends over time, whereby this data aids decision-making and management within the region. Given the rapid and ease of accumulating data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
 
-The report summarizes the data collected from the ARUs by the NSMA from 2022 to 2024. To enhance accessibility and reproducibility, the findings will be presented in this online report with fully documented code, allowing future updates as data collection methods become standardized. Additionally, recommendations will be developed to refine data transcription priorities, improve annual reporting methods, and evaluate recommendations for long-term monitoring. The objectives of this report are to:
+The report summarizes the data collected from the ARUs by the NSMA from `r min(nsma_main |> mutate(year = year(recording_date_time)) |> distinct(year) |> pull(year))` to `r max(nsma_main |> mutate(year = year(recording_date_time)) |> distinct(year) |> pull(year))`. To enhance accessibility and reproducibility, the findings will be presented in this online report with fully documented code, allowing future updates as data collection methods become standardized. Additionally, recommendations will be developed to refine data transcription priorities, improve annual reporting methods, and evaluate recommendations for long-term monitoring. The objectives of this report are to:
 
 -   Document and standardize the data management and processing procedures for acoustic data collected to ensure consistency and reproducibility.
 -   Provide a comprehensive report detailing all detected species and the abundance of individuals within the surveyed area.
@@ -118,16 +118,16 @@ Survey site selection was guided by the goal of capturing a representative sampl
 2. Locations of importance to traditional harvesting of NSMA membership, and, 
 3. Locations where multiple species, species-at-risk (SAR) or non-SAR, are present
 
-Locations were all located within the Taiga Shield Ecozone, encompassing a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types while also sampling areas of importance to NSMA members. Detailed coordinates and descriptions of the sampling locations are provided in @tbl-loc-summary. ARUs were deployed over three consecutive years (2022, 2023, and 2024); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbitt Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area.
+Locations were all located within the Taiga Shield Ecozone, encompassing a heterogeneous landscape of upland forests, wetlands, peatlands, and freshwater systems. Sampling locations were strategically distributed to maximize coverage across these habitat types while also sampling areas of importance to NSMA members. Detailed coordinates and descriptions of the sampling locations are provided in @tbl-loc-summary. ARUs were deployed over `r nrow(nsma_main |> mutate(year = year(recording_date_time)) |> distinct(year))` consecutive years (2022, 2023, 2024, 2025); in 2022, two locations were surveyed at Old Fort Rae (62.65084, -115.8187; 62.64749, -115.8198). The survey expanded in 2023 to include eight locations spanning a larger geographic area, from Whatì (63.10753, -116.9763) to Tibbitt Lake (62.5474, -113.3551). In 2024, four additional sites were added to the original eight, increasing the total to twelve locations and enhancing spatial coverage. Finally, additional sites at Tartan Rapids and Prelude Lake were surveyed in 2025. ARUs were deployed at each site to continuously record the soundscape, allowing for the analysis of acoustic activity patterns and species presence across the study area. Data collection was improved over time, with more consistent and even data collection conducted in 2024 and 2025 as seen in @fig-all-recs. A total of `r sum(all_recs$count)` recordings were collected across all years accounting for `r round(sum(all_recs_raw$recording_duration) / 3600,2)` audio hours of data.
 
 ```{r}
 #| warning: false
-#| echo: true
+#| echo: false
 #| eval: true
 #| message: false
 #| include: true
 #| collapse: true
-#| code-fold: true
+#| code-fold: false
 #| fig-align: center
 #| fig-cap: Locations from North Slave Métis Alliance ARU Monitoring Program
 #| label: fig-aru-monitoring-locations
@@ -189,15 +189,61 @@ datatable(locs_summary,
           options = list(
             searching = TRUE,  
             paging = TRUE,    
-            pageLength = 10   
+            pageLength = 10
           )) |>
   formatStyle(columns = colnames(locs_summary), 
               backgroundColor = styleEqual(c("NA"), "lightgray"))  
 ```
 
+```{r}
+#| eval: false
+#| include: false
+#| code-fold: false
+
+# No authorization access to NSMA Organization, species
+all_recs_raw <- wt_get_sync("organization_recordings", organization = 5425) |>
+  mutate(year = year(recording_date_time),
+         julian = yday(recording_date_time))
+
+wt_species <- wt_get_species()
+
+all_task_selector <- wt_get_view("organization_recordings", organization = 5425)
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| code-fold: false
+#| fig-height: 8
+#| fig-align: center
+#| fig-cap: All recordings collected from the ARU monitoring program
+#| label: fig-all-recs
+
+all_recs <- all_recs |>
+  group_by(year, location, julian) |>
+  tally(name = "count") |>
+  ungroup()
+  
+ggplot(all_recs, aes(x = julian, y = count)) +
+  geom_col() +
+  facet_wrap(~ year) +
+  scale_x_continuous(
+    name = "Month",
+    limits = c(1, max_julian),
+    breaks = c(1, 60, 121, 182, 244, 305),
+    labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")
+  ) +
+  labs(x = "Day of Year", y = "Record count") +
+  theme_bw()
+
+```
+
 ## Data processing
 
-Media were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `PREDULE-LAKE-1_20230625_053500.wav`. Recordings were also directly uploaded to WildTrax for processing and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs) 
+Media were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `PREDULE-LAKE-1_20230625_053500.wav`. Recordings were also directly uploaded to WildTrax for processing and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
 
 ::: {.callout-note collapse="true" style="background-color: #f4f4f4; padding: 20px;"}
 Advanced users can also use `wildrtrax` with `wt_get_sync(api = "organization_recording_summary", option = "data", organization = 5425)`. Ensure you have correct access to the Organization as these projects are not currently published `r Sys.Date()`.
@@ -217,7 +263,7 @@ The principal goal for data processing was to describe the acoustic community of
 #| include: true
 #| label: tbl-verified
 #| tbl-cap: Proportion of tags verified
-#| code-fold: true
+#| code-fold: false
 
 all_tags <- nsma_main |> 
   tally() |>
@@ -240,56 +286,12 @@ To evaluate species richness and activity patterns, we grouped the data by year 
 # Results
 
 ```{r}
-#| eval: false
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
 #| include: false
 #| code-fold: false
-
-# No authorization access to NSMA Organization, species
-all_recs <- wt_get_sync("organization_recordings", organization = 5425) |>
-  mutate(year = year(recording_date_time),
-         julian = yday(recording_date_time))
-
-wt_species <- wt_get_species()
-```
-
-```{r}
-#| warning: false
-#| message: false
-#| echo: false
-#| eval: true
-#| include: true
-#| code-fold: true
-#| fig-height: 8
-#| fig-align: center
-#| fig-cap: All recordings collected from the ARU monitoring program
-#| label: fig-all-recs
-
-max_julian <- max(all_recs$julian, na.rm = TRUE)
-
-ggplot(all_recs, aes(x = julian, y = location)) + 
-  geom_density_ridges(scale = 3, rel_min_height = 0.005, alpha = 0.4) + 
-  scale_y_discrete(limits = rev(levels(factor(all_recs$location)))) + 
-  scale_fill_viridis_d() +
-  scale_x_continuous(
-    name = "Month",
-    limits = c(1, max_julian),
-    breaks = c(1, 60, 121, 182, 244, 305),
-    labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")
-  ) +
-  theme_bw() +
-  facet_wrap(~year) +
-  xlab("Day of Year") + 
-  ylab("Location")
-
-```
-
-```{r}
-#| warning: false
-#| message: false
-#| echo: false
-#| eval: true
-#| include: false
-#| code-fold: true
 
 spp_rich_location <- nsma_main |>
   inner_join(wt_species, by = "species_code") |>
@@ -310,8 +312,6 @@ distinct_spp <- nsma_main |>
   arrange(species_code)
 ```
 
-A total of `r nrow(all_recs)` recordings were collected across all three years (see @fig-all-recs). Species richness increased at most locations sampled in 2024 compared to 2023, likely reflecting differences in sampling effort (see @fig-spp-rich-locs). For example, BOUNDARY-CREEK-1 recorded an increase from 16 species in 2023 to 26 species in 2024, while STAGG-RIVER-1 increased from 23 to 25 species. Similarly, TIBBIT-LAKE-1 and WHATI saw notable increases, with species counts rising from 14 to 19 and 7 to 11, respectively. Locations sampled exclusively in 2024, such as MOSQUITO-CREEK-2 and PAULINE-LAKE-3, recorded species counts of 3 and 7, respectively, adding to the overall species inventory. In contrast, smaller changes were observed at sites like CAMERON-RIVER-1, where species richness increased from 8 to 10.
-
 ```{r}
 #| warning: false
 #| message: false
@@ -321,8 +321,7 @@ A total of `r nrow(all_recs)` recordings were collected across all three years (
 #| fig-align: center
 #| fig-cap: Species richness at forest monitoring locations across years
 #| label: fig-spp-rich-locs
-#| cap-location: margin
-#| code-fold: true
+#| code-fold: false
 
 spp_rich_location |>
   ggplot(aes(x=as.factor(year), y=species_count, fill=as.factor(year), group=as.factor(year))) +
@@ -348,57 +347,30 @@ The species accumulation curve  seen in @fig-spp-accum revealed a steady increas
 #| fig-align: center
 #| fig-cap: Species accumulation curve
 #| label: fig-spp-accum
-#| cap-location: margin
-#| code-fold: true
-
-# Identify the first detection site for each species
-first_detection <- nsma_main |>
-  group_by(species_code) |>
-  arrange(recording_date_time) |>
-  summarise(
-    FirstSite = first(location),
-    FirstDate = first(recording_date_time),
-    .groups = "drop"
-  )
-
-nsma_main2 <- nsma_main |>
-  mutate(year = year(recording_date_time)) |>
-  left_join(first_detection, by = "species_code") |>
-  mutate(IsFirstDetection = location == FirstSite)
+#| code-fold: false
 
 # Create species-by-site matrix
-species_matrix <- nsma_main2 |>
-  group_by(year, location, species_code) |>
+species_matrix <- nsma_main |>
+  filter(!species_code %in% c("NONE"), !grepl('UN',species_code)) |>
+  group_by(location, species_code) |>
   summarise(individual_count = max(individual_order, na.rm = TRUE), .groups = "drop") |>
-  pivot_wider(
-    names_from = species_code,
-    values_from = individual_count,
-    values_fill = 0
-  ) |>
-  select(-year, -location) |>
+  pivot_wider(names_from = species_code, values_from = individual_count, values_fill = 0) |>
+  arrange(location) |>
+  column_to_rownames("location") |>
   as.matrix()
 
 spec_accum <- specaccum(species_matrix, method = "random")
 
-accum_data <- data.frame(
+accum_data <- tibble(
   Sites = spec_accum$sites,
   Richness = spec_accum$richness,
-  SD = spec_accum$sd) |>
-  mutate(Lower = Richness - SD, 
-         Upper = Richness + SD)
-
-first_detection_data <- first_detection |>
-  mutate(SiteOrder = match(FirstSite, unique(nsma_main$location))) |>
-  left_join(accum_data, by = c("SiteOrder" = "Sites"))
+  Lower = spec_accum$richness - spec_accum$sd,
+  Upper = spec_accum$richness + spec_accum$sd
+)
 
 ggplot(accum_data, aes(x = Sites, y = Richness)) +
   geom_line(color = "blue", size = 1) +
   geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = "lightblue", alpha = 0.4) +
-  geom_point(
-    data = first_detection_data,
-    aes(x = SiteOrder, y = Richness),
-    size = 3
-  ) +
   labs(
     title = "Species accumulation curve",
     x = "Number of Locations",
@@ -424,7 +396,7 @@ Figures @fig-spp-activity-trait – @fig-spp-activity show seasonal activity pat
 #| include: true
 #| label: tbl-bird-guilds
 #| tbl-cap: Common bird forest species guilds. For nesting habitat; Ag = Agricultural, Be = Beach, Bo = Bog, CW = Coniferous Woodlands, ES = Early Successional, MW = Mixed Woodlands, OW = Open Woodlands, TSS = Treed/Shrubby Swamp, Ur = Urban. Species from CW, MW, OW, TSS were used for analysis.
-#| code-fold: true
+#| code-fold: false
 
 guilds <- read_csv("jasper_guilds.csv") |>
   mutate(migratory_guild = case_when(str_detect("Short-distance migrant", migratory_guild) ~ "Short-distance migrants", 
@@ -445,8 +417,6 @@ datatable(guilds,
 
 ```
 
-:::{.column-margin}
-
 ```{r}
 #| warning: false
 #| message: false
@@ -457,8 +427,7 @@ datatable(guilds,
 #| fig-height: 10
 #| fig-cap: Species activity
 #| label: fig-spp-activity-trait
-#| cap-location: margin
-#| code-fold: true
+#| code-fold: false
 
 activity |>
   ggplot(aes(x = julian, y = trait, fill = trait)) + 
@@ -483,8 +452,7 @@ activity |>
 #| fig-align: center
 #| fig-cap: Species activity dietary
 #| label: fig-spp-activity-dietary
-#| cap-location: margin
-#| code-fold: true
+#| code-fold: false
 
 activity |>
   ggplot(aes(x = julian, y = dietary_guild, fill = dietary_guild)) + 
@@ -509,8 +477,7 @@ activity |>
 #| fig-align: center
 #| fig-cap: Species activity migratory
 #| label: fig-spp-activity-migratory
-#| cap-location: margin
-#| code-fold: true
+#| code-fold: false
 
 activity |>
   ggplot(aes(x = julian, y = migratory_guild, fill = migratory_guild)) + 
@@ -525,8 +492,6 @@ activity |>
   ylab("Species")
 
 ```
-:::
-
 
 ```{r}
 #| warning: false
@@ -538,8 +503,7 @@ activity |>
 #| fig-height: 10
 #| fig-cap: Species activity
 #| label: fig-spp-activity
-#| cap-location: margin
-#| code-fold: true
+#| code-fold: false
 
 activity <- nsma_main |>
   inner_join(wt_species, by = "species_code") |>
@@ -575,7 +539,6 @@ activity |>
 
 ```
 
-
 ## Species-at-risk
 
 `r length(sar)` species-at-risk were discovered in this data set. @tbl-sar outlines the species and which locations they were detected at. Species-at-risk status was pulled from the [CANSAR database](https://www.nature.com/articles/s41597-022-01381-8). 
@@ -588,7 +551,7 @@ activity |>
 #| include: true
 #| label: tbl-sar
 #| tbl-cap: Species-at-risk detections
-#| code-fold: true
+#| code-fold: false
 
 cansar <- read_csv("./assets/CAN-SAR_database.csv") |>
   select(species, sara_status) |>
@@ -627,12 +590,12 @@ datatable(nsma_sar,
 
 ```{r}
 #| warning: false
-#| echo: true
-#| eval: true
+#| echo: false
+#| eval: false
 #| message: false
 #| include: true
 #| collapse: true
-#| code-fold: true
+#| code-fold: false
 
 soi <- c(
   "Bank Swallow",
@@ -664,12 +627,12 @@ To ensure the integrity and consistency of a long-term monitoring program, it is
 
 ```{r}
 #| warning: false
-#| echo: true
+#| echo: false
 #| eval: true
 #| message: false
 #| include: true
 #| collapse: true
-#| code-fold: true
+#| code-fold: false
 #| label: tbl-prioritization
 #| tbl-cap: Prioritization
 

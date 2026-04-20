@@ -311,7 +311,7 @@ sites already surveyed, along with the inclusion of new locations in
 areas that reflect the dynamic northern landscape, is recommended to
 sustain and improve monitoring efforts.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, left=2mm, opacitybacktitle=0.6, rightrule=.15mm, bottomtitle=1mm, colback=white, toptitle=1mm, arc=.35mm, bottomrule=.15mm, leftrule=.75mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, toprule=.15mm, breakable, titlerule=0mm]
+\begin{tcolorbox}[enhanced jigsaw, opacitybacktitle=0.6, colframe=quarto-callout-note-color-frame, rightrule=.15mm, coltitle=black, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, left=2mm, toprule=.15mm, breakable, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, leftrule=.75mm, colback=white, colbacktitle=quarto-callout-note-color!10!white, arc=.35mm, bottomrule=.15mm]
 
 This report is dynamically generated, meaning its results may evolve
 with the addition of new data or further analyses. For the most recent
@@ -542,7 +542,7 @@ directly uploaded to WildTrax for processing and can be downloaded from
 the platform's Recording tab, accessible under Manage \textgreater{}
 Download list of recordings (see Figure~\ref{fig-download-recs})
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, left=2mm, opacitybacktitle=0.6, rightrule=.15mm, bottomtitle=1mm, colback=white, toptitle=1mm, arc=.35mm, bottomrule=.15mm, leftrule=.75mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, toprule=.15mm, breakable, titlerule=0mm]
+\begin{tcolorbox}[enhanced jigsaw, opacitybacktitle=0.6, colframe=quarto-callout-note-color-frame, rightrule=.15mm, coltitle=black, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, left=2mm, toprule=.15mm, breakable, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, leftrule=.75mm, colback=white, colbacktitle=quarto-callout-note-color!10!white, arc=.35mm, bottomrule=.15mm]
 
 Advanced users can also use \texttt{wildrtrax} with
 \texttt{wt\_get\_sync(api\ =\ "organization\_recording\_summary",\ option\ =\ "data",\ organization\ =\ 5425)}.
@@ -665,21 +665,7 @@ recorded species counts of 3 and 7, respectively, adding to the overall
 species inventory. In contrast, smaller changes were observed at sites
 like CAMERON-RIVER-1, where species richness increased from 8 to 10.
 
-{
-\makeatletter
-\def\LT@makecaption#1#2#3{%
-  \noalign{\smash{\hbox{\kern\textwidth\rlap{\kern\marginparsep
-  \parbox[t]{\marginparwidth}{%
-    \footnotesize{%
-      \vspace{(1.1\baselineskip)}
-    #1{#2: }\ignorespaces #3}}}}}}%
-    }
-\makeatother
-
 \begin{figure}
-
-\sidecaption{\label{fig-spp-rich-locs}Species richness at forest
-monitoring locations across years}
 
 \centering{
 
@@ -687,9 +673,10 @@ monitoring locations across years}
 
 }
 
-\end{figure}%
+\caption{\label{fig-spp-rich-locs}Species richness at forest monitoring
+locations across years}
 
-}
+\end{figure}%
 
 \subsection{Species accumulation}\label{species-accumulation}
 
@@ -705,20 +692,7 @@ for the habitats surveyed would plateau suggests that sampling effort at
 this time of year was nearly sufficient to capture most vocalizing
 species present in the study area.
 
-{
-\makeatletter
-\def\LT@makecaption#1#2#3{%
-  \noalign{\smash{\hbox{\kern\textwidth\rlap{\kern\marginparsep
-  \parbox[t]{\marginparwidth}{%
-    \footnotesize{%
-      \vspace{(1.1\baselineskip)}
-    #1{#2: }\ignorespaces #3}}}}}}%
-    }
-\makeatother
-
 \begin{figure}
-
-\sidecaption{\label{fig-spp-accum}Species accumulation curve}
 
 \centering{
 
@@ -726,9 +700,9 @@ species present in the study area.
 
 }
 
-\end{figure}%
+\caption{\label{fig-spp-accum}Species accumulation curve}
 
-}
+\end{figure}%
 
 \subsection{Species through the
 season}\label{species-through-the-season}
@@ -757,20 +731,7 @@ CW, MW, OW, TSS were used for analysis.}
 
 \marginnote{\begin{footnotesize}
 
-{
-\makeatletter
-\def\LT@makecaption#1#2#3{%
-  \noalign{\smash{\hbox{\kern\textwidth\rlap{\kern\marginparsep
-  \parbox[t]{\marginparwidth}{%
-    \footnotesize{%
-      \vspace{(1.1\baselineskip)}
-    #1{#2: }\ignorespaces #3}}}}}}%
-    }
-\makeatother
-
 \begin{figure}
-
-\sidecaption{\label{fig-spp-activity-trait}Species activity}
 
 \centering{
 
@@ -778,24 +739,11 @@ CW, MW, OW, TSS were used for analysis.}
 
 }
 
+\caption{\label{fig-spp-activity-trait}Species activity}
+
 \end{figure}%
 
-}
-
-{
-\makeatletter
-\def\LT@makecaption#1#2#3{%
-  \noalign{\smash{\hbox{\kern\textwidth\rlap{\kern\marginparsep
-  \parbox[t]{\marginparwidth}{%
-    \footnotesize{%
-      \vspace{(1.1\baselineskip)}
-    #1{#2: }\ignorespaces #3}}}}}}%
-    }
-\makeatother
-
 \begin{figure}
-
-\sidecaption{\label{fig-spp-activity-dietary}Species activity dietary}
 
 \centering{
 
@@ -803,9 +751,9 @@ CW, MW, OW, TSS were used for analysis.}
 
 }
 
-\end{figure}%
+\caption{\label{fig-spp-activity-dietary}Species activity dietary}
 
-}
+\end{figure}%
 
 {
 \makeatletter
@@ -835,20 +783,7 @@ migratory}
 
 \end{footnotesize}}
 
-{
-\makeatletter
-\def\LT@makecaption#1#2#3{%
-  \noalign{\smash{\hbox{\kern\textwidth\rlap{\kern\marginparsep
-  \parbox[t]{\marginparwidth}{%
-    \footnotesize{%
-      \vspace{(1.1\baselineskip)}
-    #1{#2: }\ignorespaces #3}}}}}}%
-    }
-\makeatother
-
 \begin{figure}
-
-\sidecaption{\label{fig-spp-activity}Species activity}
 
 \centering{
 
@@ -856,9 +791,9 @@ migratory}
 
 }
 
-\end{figure}%
+\caption{\label{fig-spp-activity}Species activity}
 
-}
+\end{figure}%
 
 \subsection{Species-at-risk}\label{species-at-risk}
 
